@@ -16,6 +16,23 @@ spring:
 #    testOnBorrow: false
 #    testOnReturn: false
 
+  http:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 50MB
+#    encoding.charset: UTF-8
+#    encoding.force: false
+
+  mvc:
+    static-path-pattern: /**
+
+# static-locations 可以重新定义 static-path-pattern 所指向的路径，支持 classpath: 和 file:,多个用,隔开
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${web.upload-path}
+
+#自定义图片存放路径
+web:
+  upload-path: E:/phycholee_blog/image/
 
 mybatis:
   mapperLocations: classpath*:mapper/*.xml

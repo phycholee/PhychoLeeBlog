@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试后台api</title>
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/font-awesome.min.css">
+</head>
+<body>
+
+    <br>
+    <button class="btn btn-primary" id="btn-test">测试</button>
+    <!--<img src="http://127.0.0.1:8080/1.jpg">-->
+
+    <hr>
+
+    <form action="http://127.0.0.1:8080/uploadImage" method="post" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <input type="submit" class="btn btn-primary" value="上传">
+    </form>
+
+    <hr>
+    <form id="add-user-form">
+        UserName: <input id="username" class="form-control" type="text" name="username"><br>
+        Email: <input id="email" class="form-control" type="email" name="email"><br>
+        <button class="btn btn-primary" id="btn-add" type="button">提交</button>
+    </form>
+
+</body>
+</html>
+<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script>
+    $('#btn-add').on('click', function () {
+        $.ajax({
+            url:'http://127.0.0.1:8080/addUser',
+            type:'post',
+            data:{
+                username:$('#username').val(),
+                email:$('#email').val()
+            },
+            success:function (data) {
+                alert(data.message);
+            },
+            error:function (data) {
+
+            }
+        });
+    });
+
+
+    $('#btn-test').on('click', function () {
+        $.ajax({
+            url:'http://127.0.0.1:8080/test',
+            type:'get',
+
+            success:function (data) {
+                alert(data);
+            },
+            error:function (data) {
+
+            }
+        });
+    });
+</script>

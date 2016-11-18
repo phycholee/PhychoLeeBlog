@@ -40,4 +40,11 @@ public class TestFileUpload {
         String yearMonthDay = TimeUtil.getYearMonthDay();
         System.out.println(yearMonthDay);
     }
+
+    @Test
+    public void testString(){
+        String a = "\\";
+        a = a.replace("\\", "/");
+        System.out.println(a);
+    }
 }

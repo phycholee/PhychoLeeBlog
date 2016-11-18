@@ -1,13 +1,16 @@
 package com.phycholee.blog.model;
 
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class Article {
 
     private Integer id;
 
+    @NotNull
     private String title;
 
+    @NotNull
     private String subTitle;
 
     private Integer authorId;
@@ -18,7 +21,16 @@ public class Article {
 
     private Integer views;
 
-    private String content;
+    @NotNull
+    private String markdownContent;
+
+    @NotNull
+    private String htmlContent;
+
+    private String jumbotron;
+
+    @NotNull
+    private Integer status;
 
     public Integer getId() {
         return id;
@@ -76,11 +88,35 @@ public class Article {
         this.views = views;
     }
 
-    public String getContent() {
-        return content;
+    public String getMarkdownContent() {
+        return markdownContent;
     }
 
-    public void setContent(String content) {
-        this.content = content == null ? null : content.trim();
+    public void setMarkdownContent(String markdownContent) {
+        this.markdownContent = markdownContent == null ? null : markdownContent.trim();
+    }
+
+    public String getHtmlContent() {
+        return htmlContent;
+    }
+
+    public void setHtmlContent(String htmlContent) {
+        this.htmlContent = htmlContent == null ? null : htmlContent.trim();
+    }
+
+    public String getJumbotron() {
+        return jumbotron;
+    }
+
+    public void setJumbotron(String jumbotron) {
+        this.jumbotron = jumbotron;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }

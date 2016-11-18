@@ -1,0 +1,19 @@
+*{
+    -webkit-box-sizing:content-box;
+    -moz-box-sizing:content-box;
+    box-sizing:content-box;
+}
+/*.upload_btn{*/
+    /*display: none;*/
+/*}*/
+.upload_preview{
+    height:142.533px;
+}
+
+.btns-operate button{
+    font-size: 1.0em;
+}
+
+.container label{
+    font-size: 1.2em;
+}

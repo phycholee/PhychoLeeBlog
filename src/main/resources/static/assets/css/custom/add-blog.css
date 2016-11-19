@@ -3,9 +3,9 @@
     -moz-box-sizing:content-box;
     box-sizing:content-box;
 }
-/*.upload_btn{*/
-    /*display: none;*/
-/*}*/
+.upload_btn{
+    display: none;
+}
 .upload_preview{
     height:142.533px;
 }

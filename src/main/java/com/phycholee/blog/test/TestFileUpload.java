@@ -37,7 +37,7 @@ public class TestFileUpload {
 
     @Test
     public void testTime(){
-        String yearMonthDay = TimeUtil.getYearMonthDay();
+        String yearMonthDay = TimeUtil.getDateTime();
         System.out.println(yearMonthDay);
     }
 

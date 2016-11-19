@@ -19,7 +19,6 @@ $(function() {
         fileSize         :   10485760,                // 上传文件的大小
         multiple         :   true,                    // 是否可以多个文件上传
         dragDrop         :   true,                    // 是否可以拖动上传文件
-//            tailor           :   true,                    // 是否可以裁剪图片
         del              :   true,                    // 是否可以删除文件
         finishDel        :   false,  				  // 是否在上传文件完成后删除预览
         /* 外部获得的回调接口 */
@@ -47,7 +46,7 @@ $(function() {
         }
     });
 
-//        编辑器初始化
+    //编辑器初始化
     var editor = editormd("editormd", {
         width   : "100%",
         height  : 600,
@@ -57,17 +56,12 @@ $(function() {
         imageUpload : true,
         imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
         imageUploadURL : address+"upload/uploadPostImage"
-        /*
-         上传的后台只需要返回一个 JSON 数据，结构如下：
-         {
-         success : 0 | 1,           // 0 表示上传失败，1 表示上传成功
-         message : "提示的信息，上传成功或上传失败及错误信息等。",
-         url     : "图片地址"        // 上传成功时才返回
-         }
-         */
     });
 
     $('#btn-save').on('click',function () {
+        var code;
+
+        // $('#save-modal').modal({backdrop: 'static', keyboard: false});
         var status = 2;     //表示保存，并不发布
         var title1 = $('#title').val();
         var subTitle = $('#sub-title').val();
@@ -86,11 +80,23 @@ $(function() {
             },
             success:function (data) {
                 console.log(data.message);
+                code = data.code;
+                if (code==400){
+                    alert(data.message);
+                }
             },
             error:function (data) {
 
             }
         });
+
+        //文章保存成功才上传巨幕图
+        if (code === 200){
+            $('#btn-upload-jb').click();
+            alert('保存成功');
+        }
     });
+
+
 
 });

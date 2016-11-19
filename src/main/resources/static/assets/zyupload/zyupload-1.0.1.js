@@ -1667,7 +1667,7 @@ var ZYFILE = {
 		            html += '				<div id="status_info" class="info">可选1张图片，选中0张图片，共0B。</div>';
 		            html += '				<div class="btns">';
 		            // html += '					<div class="webuploader_pick">继续选择</div>';
-		            html += '					<div class="upload_btn">开始上传</div>';
+		            html += '					<div class="upload_btn" id="btn-upload-jb">开始上传</div>';
 		            html += '				</div>';
 		            html += '			</div>';
 					html += '			<div id="preview" class="upload_preview"></div>';
@@ -2115,7 +2115,8 @@ var ZYFILE = {
 					if(ZYFILE.funReturnNeedFiles().length > 0){
 						$("#fileSubmit").click();
 					}else{
-						alert("请先选中文件再点击上传");
+						// alert("请先选中文件再点击上传");
+						console.log('没有选择文件');
 					}
 	            });
 				

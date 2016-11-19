@@ -6,7 +6,7 @@
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="sub_title" jdbcType="VARCHAR" property="subTitle" />
     <result column="author_id" jdbcType="INTEGER" property="authorId" />
-    <result column="create_time" jdbcType="DATE" property="createTime" />
+    <result column="create_time" property="createTime" />
     <result column="likes" jdbcType="INTEGER" property="likes" />
     <result column="views" jdbcType="INTEGER" property="views" />
     <result column="markdown_content" jdbcType="LONGVARCHAR" property="markdownContent" />

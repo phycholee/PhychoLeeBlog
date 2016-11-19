@@ -1,7 +1,10 @@
 package com.phycholee.blog.controller;
 
+import com.phycholee.blog.model.Article;
+import com.phycholee.blog.service.ArticleService;
 import com.phycholee.blog.utils.FileUtil;
 import com.phycholee.blog.utils.TimeUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +28,9 @@ public class FileUploadController {
     //获取上传的文件夹，在application.yml中的配置
     @Value("${web.upload-path}")
     private String uploadPath;
+
+    @Autowired
+    private ArticleService articleService;
 
     /**
      * 上传博客图片
@@ -84,24 +90,35 @@ public class FileUploadController {
         Map<String, Object> resultMap = new HashMap<>();
 
         //需要有博客存入才能写入巨幕图片
-//        Integer blogId = (Integer) request.getSession().getAttribute("articleId4Jumbotron");
-//        if (blogId == null){
-//            resultMap.put("code", 404);
-//            resultMap.put("message", "博客未创建成功");
-//
-//            return resultMap;
-//        }
+        Integer blogId = (Integer) request.getSession().getAttribute("articleId4Jumbotron");
+        if (blogId == null){
+            resultMap.put("code", 404);
+            resultMap.put("message", "博客未创建成功");
+            return resultMap;
+        }
 
         //根据当前日期创建文件夹
         String createPath = "jumbotron" +File.separator + TimeUtil.getYearMonthDay() + File.separator;
 
         String path = uploadPath + File.separator + createPath;
 
+        String url;
+
         if(!file.isEmpty()) {
 
             try {
                 //写入磁盘
-                FileUtil.writeImage2static(path, file);
+                url = FileUtil.writeImage2static(path, file);
+
+                //将'\'转成'/'
+                createPath = createPath.replace("\\","/");
+                resultMap.put("url", "/"+createPath+url);
+
+                //将url存入数据库
+                Article article = new Article();
+                article.setId(blogId);
+                article.setJumbotron("/"+createPath+url);
+                articleService.update(article);
             } catch (Exception e) {
                 e.printStackTrace();
                 resultMap.put("code", 400);

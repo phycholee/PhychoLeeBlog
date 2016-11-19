@@ -1,30 +1,25 @@
 package com.phycholee.blog.model;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 public class Article {
 
     private Integer id;
 
-    @NotNull
     private String title;
 
-    @NotNull
     private String subTitle;
 
     private Integer authorId;
 
-    private Date createTime;
+    private String createTime;
 
     private Integer likes;
 
     private Integer views;
 
-    @NotNull
     private String markdownContent;
 
-    @NotNull
     private String htmlContent;
 
     private String jumbotron;
@@ -64,11 +59,11 @@ public class Article {
         this.authorId = authorId;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 

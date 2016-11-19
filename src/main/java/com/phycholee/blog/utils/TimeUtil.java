@@ -1,5 +1,6 @@
 package com.phycholee.blog.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -19,6 +20,17 @@ public class TimeUtil {
         int year = CALENDAR.get(Calendar.YEAR);
         int month = CALENDAR.get(Calendar.MONTH)+1;
         return year+""+month;
+    }
+
+    public static String getDateTime(){
+        CALENDAR.setTime(new Date());
+        return formatDate(CALENDAR.getTime());
+    }
+
+
+    private static String formatDate(Date date){
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        return simpleDateFormat.format(date);
     }
 
 }

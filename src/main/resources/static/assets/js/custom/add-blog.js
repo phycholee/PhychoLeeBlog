@@ -59,9 +59,18 @@ $(function() {
     });
 
     $('#btn-save').on('click',function () {
-        var code;
+        $('#save-modal').modal({backdrop: 'static', keyboard: false});
+        $('#mySmallModalLabel').text('保存中，请勿做其他操作！');
+        $('.spinner').css('display','block');
+        $('.success').css('display','none');
+        $('.error').css('display','none');
+        $('#btn-dismiss').attr('disabled',true);
 
-        // $('#save-modal').modal({backdrop: 'static', keyboard: false});
+        var waitTime = 3000;
+        var startTime = new Date();
+
+        var code;
+        var message;
         var status = 2;     //表示保存，并不发布
         var title1 = $('#title').val();
         var subTitle = $('#sub-title').val();
@@ -81,9 +90,7 @@ $(function() {
             success:function (data) {
                 console.log(data.message);
                 code = data.code;
-                if (code==400){
-                    alert(data.message);
-                }
+                message = data.message;
             },
             error:function (data) {
 
@@ -93,10 +100,35 @@ $(function() {
         //文章保存成功才上传巨幕图
         if (code === 200){
             $('#btn-upload-jb').click();
-            alert('保存成功');
         }
+
+
+        var endTime = new Date();
+        var useTime = endTime.getTime()-startTime.getTime();
+        console.log(endTime.getTime());
+        if (useTime<waitTime){
+            waitTime = waitTime - useTime;
+        }else{
+            waitTime = useTime;
+        }
+
+        setTimeout(function () {
+            if(code == 200){
+                $('#mySmallModalLabel').text('保存成功');
+                $('.success').css('display','block');
+            }else if(code == 400) {
+                $('#mySmallModalLabel').text('保存失败');
+                $('.error').css('display','block');
+                $('#error-msg').text(message);
+            } else{
+                $('#mySmallModalLabel').text('保存失败');
+                $('.error').css('display','block');
+                $('#error-msg').text('未知错误');
+            }
+
+            $('.spinner').css('display','none');
+            $('#btn-dismiss').attr('disabled',false);
+        }, waitTime);
+
     });
-
-
-
 });

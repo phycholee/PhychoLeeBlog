@@ -34,20 +34,20 @@ public class ArticleController {
     public Map<String, Object> addArticle(@Validated Article article, HttpServletRequest request){
         Map<String, Object> resultMap = new HashMap<>();
 
-        String errorMessage = "保存文章失败";
+        String errorMessage = "错误：保存文章失败";
         try {
             //检验字段
             if (article.getTitle() == null || "".equals(article.getTitle())){
-                errorMessage = "标题不能为空";
+                errorMessage = "错误：标题不能为空";
                 throw new RuntimeException(errorMessage);
             }else if (article.getSubTitle() == null || "".equals(article.getSubTitle())){
-                errorMessage = "副标题不能为空";
+                errorMessage = "错误：副标题不能为空";
                 throw new RuntimeException(errorMessage);
             }else if (article.getMarkdownContent() == null || "".equals(article.getMarkdownContent())){
-                errorMessage = "markdown内容不能为空";
+                errorMessage = "错误：MD内容不能为空";
                 throw new RuntimeException(errorMessage);
             }else if (article.getHtmlContent() == null || "".equals(article.getHtmlContent())){
-                errorMessage = "html内容不能为空";
+                errorMessage = "错误：HTML内容不能为空";
                 throw new RuntimeException(errorMessage);
             }
 

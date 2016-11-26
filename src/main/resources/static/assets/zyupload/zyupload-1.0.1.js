@@ -1972,7 +1972,7 @@ var ZYFILE = {
 								// 删除方法
 								$(".file_del").click(function() {
 									ZYFILE.funDeleteFile(parseInt($(this).attr("data-index")), true);
-									return false;	
+									return false;
 								});
 							}
 							

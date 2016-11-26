@@ -2600,6 +2600,7 @@
          */
 
         fullscreen : function() {
+            $('.btns-operate').css('display','none');
 
             var _this            = this;
             var state            = this.state;
@@ -2657,6 +2658,7 @@
          */
 
         fullscreenExit : function() {
+            $('.btns-operate').css('display','inline-block');
 
             var editor            = this.editor;
             var settings          = this.settings;

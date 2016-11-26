@@ -9,9 +9,9 @@ var address = '/';
 
 $(function() {
     // 图片上传初始化
-    $("#zyupload").zyUpload({
-        width            :   "100%",                 // 宽度
-        height           :   "400px",                 // 宽度
+    var uploadImage = $("#zyupload").zyUpload({
+        width            :   "96%",                 // 宽度
+        height           :   "350px",                 // 宽度
         itemWidth        :   "140px",                 // 文件项的宽度
         itemHeight       :   "115px",                 // 文件项的高度
         url              :   address+"upload/uploadJumbotronImage",  // 上传文件的路径
@@ -48,7 +48,7 @@ $(function() {
 
     //编辑器初始化
     var editor = editormd("editormd", {
-        width   : "100%",
+        width   : "99.8%",
         height  : 600,
         path : "../assets/editor.md/lib/",
         emoji : true,
@@ -59,21 +59,34 @@ $(function() {
     });
 
     $('#btn-save').on('click',function () {
-        $('#save-modal').modal({backdrop: 'static', keyboard: false});
-        $('#mySmallModalLabel').text('保存中，请勿做其他操作！');
-        $('.spinner').css('display','block');
-        $('.success').css('display','none');
-        $('.error').css('display','none');
-        $('#btn-dismiss').attr('disabled',true);
+        //保存文章
+        saveArticle(2)
+    });
+
+    $('#btn-publish').on('click',function () {
+        //直接发布文章
+        saveArticle(1)
+    });
+    
+    function saveArticle(status) {
+        //检查不能为空项
+        if (!checkEmpty()){
+            return;
+        }
+
+        //让父层也不能操作
+        parent.layer.load(2, {
+            shade: [0.2, '#fff']
+        });
 
         var waitTime = 3000;
         var startTime = new Date();
 
-        var code;
+        var code = 0;
         var message;
-        var status = 2;     //表示保存，并不发布
-        var title1 = $('#title').val();
-        var subTitle = $('#sub-title').val();
+
+        var title1 = $('#title').val().trim();
+        var subTitle = $('#sub-title').val().trim();
         var markdown_content = editor.getMarkdown();       // 获取 Markdown 源码
         var html_content = editor.getHTML();           // 获取 Textarea 保存的 HTML 源码
         $.ajax({
@@ -85,7 +98,7 @@ $(function() {
                 subTitle: subTitle,
                 markdownContent: markdown_content,
                 htmlContent: html_content,
-                status: status
+                status: status      //1表示发布，2表示只保存
             },
             success:function (data) {
                 console.log(data.message);
@@ -112,23 +125,79 @@ $(function() {
             waitTime = useTime;
         }
 
-        setTimeout(function () {
+        //关闭加载
+        setTimeout(function(){
+            parent.layer.closeAll('loading');
+
             if(code == 200){
-                $('#mySmallModalLabel').text('保存成功');
-                $('.success').css('display','block');
+                swal({
+                    title: "保存文章成功",
+                    text: "",
+                    type: "success"
+                });
+
+                //成功后清空，防止重复提交
+                $('#title').val('');
+                $('#sub-title').val('');
+                editor.setMarkdown('');
+                $(".file_del").click();
             }else if(code == 400) {
-                $('#mySmallModalLabel').text('保存失败');
-                $('.error').css('display','block');
-                $('#error-msg').text(message);
+                swal({
+                    title: "保存文章失败",
+                    text: message,
+                    type: "error"
+                });
             } else{
-                $('#mySmallModalLabel').text('保存失败');
-                $('.error').css('display','block');
-                $('#error-msg').text('未知错误');
+                swal({
+                    title: "保存文章失败",
+                    text: "未知错误",
+                    type: "error"
+                });
             }
 
-            $('.spinner').css('display','none');
-            $('#btn-dismiss').attr('disabled',false);
-        }, waitTime);
 
-    });
+        }, waitTime);
+    }
+
+    function checkEmpty() {
+        var title1 = $('#title').val().trim();
+        var subTitle = $('#sub-title').val().trim();
+        var markdown_content = editor.getMarkdown();      // 获取 Markdown 源码
+        var html_content = editor.getHTML();
+
+        if ('' == title1){
+            showToastr('标题不能为空', '错误');
+            return false;
+        }else if('' == subTitle){
+            showToastr('副标题不能为空', '错误');
+            return false;
+        }else if('' == markdown_content){
+            showToastr('Markdown内容不能为空', '错误');
+            return false;
+        }else if('' == html_content){
+            showToastr('HTML内容不能为空', '错误');
+            return false;
+        }
+
+        return true;
+    }
+
+    function showToastr(title, message) {
+        toastr.options = {
+            closeButton: true,
+            debug: false,
+            progressBar: true,
+            positionClass: "toast-bottom-center",
+            onclick: null,
+            showDuration: "400",
+            hideDuration: "1000",
+            timeOut: "7000",
+            extendedTimeOut: "1000",
+            showEasing: "swing",
+            hideEasing: "linear",
+            showMethod: "fadeIn",
+            hideMethod: "fadeOut"
+        };
+        toastr.error(title, message);
+    }
 });

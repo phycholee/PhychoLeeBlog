@@ -3,6 +3,27 @@
     -moz-box-sizing:content-box;
     box-sizing:content-box;
 }
+
+body{
+    font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-color: #f0f3f4;
+}
+
+
+.title-form{
+    padding:15px 0 0 18px;
+}
+.title-form input{
+    width:95%;
+    height: 28px;
+}
+.panel-heading{
+    font-weight: bold;
+}
+.title-form label{
+    font-size: 1.0em;
+}
+
 .upload_btn{
     display: none;
 }
@@ -10,12 +31,12 @@
     height:142.533px;
 }
 
-.btns-operate button{
-    font-size: 1.0em;
+#editormd{
+    margin: 0 auto;
 }
 
-.container label{
-    font-size: 1.2em;
+.btns-operate button{
+    font-size: 1.0em;
 }
 
 #save-modal{

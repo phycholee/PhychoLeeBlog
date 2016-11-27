@@ -110,3 +110,21 @@ body{
           -webkit-transform: scale(1.0);
       }
 }
+
+.gohome {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+}
+.gohome a {
+    height: 38px;
+    width: 38px;
+    display: block;
+    background: #2f4050;
+    text-align: center;
+    line-height: 38px;
+    color: #fff;
+    border-radius: 50%;
+    opacity: .5;
+}

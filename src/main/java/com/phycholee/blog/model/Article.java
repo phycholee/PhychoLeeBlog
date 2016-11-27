@@ -4,6 +4,9 @@ import javax.validation.constraints.NotNull;
 
 public class Article {
 
+    public final static Integer STATUS_PUBLISHED = 1;
+    public final static Integer STATUS_SAVE = 2;
+
     private Integer id;
 
     private String title;
@@ -113,5 +116,22 @@ public class Article {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", subTitle='" + subTitle + '\'' +
+                ", authorId=" + authorId +
+                ", createTime='" + createTime + '\'' +
+                ", likes=" + likes +
+                ", views=" + views +
+                ", markdownContent='" + markdownContent + '\'' +
+                ", htmlContent='" + htmlContent + '\'' +
+                ", jumbotron='" + jumbotron + '\'' +
+                ", status=" + status +
+                '}';
     }
 }

@@ -1,0 +1,67 @@
+body {
+    font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    color: #676a6c;
+}
+.blog-list table tr td {
+    border-top: none;
+    border-bottom: 1px solid #e7eaec;
+    padding: 15px 10px;
+    vertical-align: middle;
+}
+
+
+.label {
+    /*background-color: #d1dade;*/
+    /*color: #5e5e5e;*/
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    text-shadow: none;
+}
+/*.label-primary {*/
+    /*background-color: #23b7e5;*/
+    /*color: #FFFFFF;*/
+/*}*/
+/*.label-success {*/
+    /*background-color: #8fe545;*/
+    /*color: #FFFFFF;*/
+/*}*/
+
+.blog-list a {
+    color: #676a6c;
+}
+a:hover{
+    text-decoration: none;
+
+}
+
+.blog-title a{
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.blog-time {
+    font-weight: bold;
+}
+.blog-time .create-time{
+    font-style: italic;
+    font-weight: normal;
+}
+.blog-author img {
+    width: 32px;
+    height: 32px;
+}
+.blog-author span{
+    font-size: 1.1em;
+    font-family: Lora,"Times New Roman",serif;
+    font-style: italic;
+    padding-left: 3px;
+}
+
+.btn-white {
+    font-size: 1.0em;
+    color: inherit;
+    background: white;
+    border: 1px solid #e7eaec;
+}

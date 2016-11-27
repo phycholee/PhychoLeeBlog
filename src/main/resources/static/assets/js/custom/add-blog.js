@@ -111,7 +111,7 @@ $(function() {
         });
 
         //文章保存成功才上传巨幕图
-        if (code === 200){
+        if (code == 200){
             $('#btn-upload-jb').click();
         }
 

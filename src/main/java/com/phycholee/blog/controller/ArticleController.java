@@ -5,13 +5,12 @@ import com.phycholee.blog.service.ArticleService;
 import com.phycholee.blog.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,6 +23,36 @@ public class ArticleController {
 
     @Autowired
     private ArticleService articleService;
+
+
+    /**
+     * 分页查询文章
+     * @return
+     */
+    @PostMapping("getArticleByPage")
+    public Map<String, Object> getArticleByPage(Integer offset, Integer limit, Integer status){
+        Map<String, Object> resultMap = new HashMap<>();
+
+        Integer count = 0;
+        List<Article> articleList = null;
+        try {
+            count = articleService.countByStatus(status);
+            if (count != null && !count.equals(0)){
+                articleList = articleService.findByPage(offset, limit, status);
+            }
+            System.out.println(offset+limit+status+"总数："+count);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            resultMap.put("error", 400);
+            resultMap.put("message", "查找出错");
+        }
+
+        resultMap.put("code", 200);
+        resultMap.put("total", count);
+        resultMap.put("rows", articleList);
+        return resultMap;
+    }
 
     /**
      * 保存文章

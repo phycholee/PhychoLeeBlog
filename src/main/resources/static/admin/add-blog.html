@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="../assets/css/plugins/toastr.min.css">
     <link rel="stylesheet" href="../assets/editor.md/editormd.min.css" />
     <link rel="stylesheet" href="../assets/zyupload/skins/zyupload-1.0.1.min.css">
+    <link rel="stylesheet" href="../assets/css/plugins/webuploader.css">
+    <link rel="stylesheet" href="../assets/css/webuploader-demo.css">
 
     <link rel="stylesheet" href="../assets/css/custom/add-blog.css">
 </head>
@@ -34,8 +36,28 @@
 
         <!--图片上传-->
         <div class="panel panel-info">
-            <div class="panel-heading">上传文章巨幕图（可选，建议分辨率为1920*1080，小于10MB）</div>
-            <div id="zyupload" class="zyupload"></div>
+            <div class="panel-heading">上传文章巨幕图（可选）</div>
+            <!--<div id="zyupload" class="zyupload"></div>-->
+            <div id="uploader" class="wu-example">
+                <div class="queueList">
+                    <div id="dndArea" class="placeholder">
+                        <div id="filePicker"></div>
+                        <p>或将照片拖到这里，单次最多可选1张</p>
+                        <p>建议分辨率为1920*1080，小于10MB</p>
+                    </div>
+                </div>
+                <div class="statusBar" style="display:none;">
+                    <div class="progress">
+                        <span class="text">0%</span>
+                        <span class="percentage"></span>
+                    </div>
+                    <div class="info"></div>
+                    <div class="btns">
+                        <!--<div id="filePicker2"></div>-->
+                        <div id="uploadBtn" class="uploadBtn">开始上传</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!--MD编辑器-->
@@ -92,7 +114,7 @@
 
 </body>
 </html>
-<script src="../assets/js/jquery.min.js"></script>
+<script src="../assets/js/jquery-2.1.4.min.js"></script>
 <script src="../assets/js/bootstrap.min.js"></script>
 <script src="../assets/js/plugins/layer/layer.min.js"></script>
 <script src="../assets/js/plugins/sweetalert.min.js"></script>
@@ -103,3 +125,10 @@
 <script src="../assets/zyupload/zyupload-1.0.1.js"></script>
 
 <script src="../assets/js/custom/add-blog.js"></script>
+<script src="../assets/js/plugins/webuploader.min.js"></script>
+<script src="../assets/js/webuploader-demo.js"></script>
+<!-- Web Uploader -->
+<script type="text/javascript">
+    // 添加全局站点信息
+    var BASE_URL = 'js/plugins/webuploader';
+</script>

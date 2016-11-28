@@ -1,8 +1,8 @@
-*{
-    -webkit-box-sizing:content-box;
-    -moz-box-sizing:content-box;
-    box-sizing:content-box;
-}
+/**{*/
+    /*-webkit-box-sizing:content-box;*/
+    /*-moz-box-sizing:content-box;*/
+    /*box-sizing:content-box;*/
+/*}*/
 
 body{
     font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -15,7 +15,7 @@ body{
 }
 .title-form input{
     width:95%;
-    height: 28px;
+    height: 38px;
 }
 .panel-heading{
     font-weight: bold;
@@ -37,32 +37,6 @@ body{
 
 .btns-operate button{
     font-size: 1.0em;
-}
-
-#save-modal{
-    top:17%;
-}
-
-.success {
-    margin: 39.5px auto;
-    width: 150px;
-    text-align: center;
-}
-.success .fa-check{
-    font-size: 4em;
-    color: #67CF22;
-}
-
-.error{
-    margin: 44px auto;
-    text-align: center;
-}
-.error .fa-times{
-    font-size: 3.4em;
-    color: #ff0000;
-}
-.error span{
-    font-size: 1.2em;
 }
 
 /*等待动画*/

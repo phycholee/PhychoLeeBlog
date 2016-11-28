@@ -27,8 +27,9 @@ public class Article {
 
     private String jumbotron;
 
-    @NotNull
     private Integer status;
+
+    private String imgSrc;
 
     public Integer getId() {
         return id;
@@ -116,6 +117,14 @@ public class Article {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getImgSrc() {
+        return imgSrc;
+    }
+
+    public void setImgSrc(String imgSrc) {
+        this.imgSrc = imgSrc;
     }
 
     @Override

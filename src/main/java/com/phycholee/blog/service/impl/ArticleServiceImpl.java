@@ -4,6 +4,7 @@ import com.phycholee.blog.base.service.impl.BaseServiceImpl;
 import com.phycholee.blog.dao.ArticleDao;
 import com.phycholee.blog.model.Article;
 import com.phycholee.blog.service.ArticleService;
+import com.phycholee.blog.utils.ParseHTMLUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,5 +47,20 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article> implements Arti
     @Override
     public Integer countByStatus(Integer status) throws SQLException {
         return articleDao.countByStatus(status);
+    }
+
+    /**
+     * 保存文章图片链接到数据库
+     * @param article
+     * @throws SQLException
+     */
+    @Override
+    public void insertImgSrc(Article article) throws SQLException {
+        String imgSrc = ParseHTMLUtil.getImgSrc(article.getHtmlContent());
+        if (!"".equals(imgSrc)){
+            article.setImgSrc(imgSrc);
+        }
+
+        insert(article);
     }
 }

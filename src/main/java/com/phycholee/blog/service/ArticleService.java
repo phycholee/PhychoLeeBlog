@@ -15,4 +15,6 @@ public interface ArticleService extends BaseService<Article> {
     List<Article> findByPage(Integer offset, Integer limit, Integer status) throws SQLException;
 
     Integer countByStatus(Integer status) throws SQLException;
+
+    void insertImgSrc(Article article) throws SQLException;
 }

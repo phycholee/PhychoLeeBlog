@@ -131,6 +131,9 @@ public class FileUploadController {
             return resultMap;
         }
 
+        //上传成功后移除id
+        request.getSession().removeAttribute("articleId4Jumbotron");
+
         resultMap.put("code", 200);
         resultMap.put("message", "上传图片成功");
         return resultMap;

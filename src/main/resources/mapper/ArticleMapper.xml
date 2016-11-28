@@ -13,10 +13,11 @@
     <result column="html_content" jdbcType="LONGVARCHAR" property="htmlContent" />
     <result column="jumbotron" jdbcType="VARCHAR" property="jumbotron" />
     <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="img_src" jdbcType="LONGVARCHAR" property="imgSrc" />
   </resultMap>
 
   <sql id="Base_Column_List">
-    id, title, sub_title, author_id, create_time, likes, views, markdown_content, html_content, jumbotron, status
+    id, title, sub_title, author_id, create_time, likes, views, markdown_content, html_content, jumbotron, status, img_src
   </sql>
 
   <!--根据status获取总数-->
@@ -83,6 +84,9 @@
       <if test="status != null">
         status,
       </if>
+      <if test="imgSrc != null">
+        img_src,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="title != null">
@@ -114,6 +118,9 @@
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
+      </if>
+      <if test="imgSrc != null">
+        #{imgSrc,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -150,6 +157,9 @@
       </if>
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="imgSrc != null">
+        img_src = #{imgSrc,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

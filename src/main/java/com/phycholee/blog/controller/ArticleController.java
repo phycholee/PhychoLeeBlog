@@ -82,7 +82,7 @@ public class ArticleController {
 
             article.setCreateTime(TimeUtil.getDateTime());
 
-            articleService.insert(article);
+            articleService.insertImgSrc(article);
 
             //将id放进session中，给后面保存巨幕图用
             Integer id = article.getId();

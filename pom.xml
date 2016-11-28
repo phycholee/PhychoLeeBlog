@@ -71,6 +71,14 @@
       <version>2.5</version>
     </dependency>
 
+    <!-- htmlparser -->
+    <dependency>
+      <groupId>org.htmlparser</groupId>
+      <artifactId>htmlparser</artifactId>
+      <version>2.1</version>
+    </dependency>
+
+
   </dependencies>
 
   <!-- Package as an executable jar -->
@@ -87,4 +95,10 @@
 
     <finalName>blog</finalName>
   </build>
+
+  <!--指定默认jdk版本-->
+  <properties>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+  </properties>
 </project>

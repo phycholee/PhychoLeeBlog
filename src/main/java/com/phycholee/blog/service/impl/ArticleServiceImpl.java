@@ -29,8 +29,8 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article> implements Arti
 
     /**
      * 分页查找文章
-     * @param start     起始数
-     * @param offset    限制数
+     * @param offset     起始数
+     * @param limit    限制数
      * @return
      * @throws SQLException
      */
@@ -41,7 +41,14 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article> implements Arti
         params.put("limit", limit);
         params.put("status", status);
 
-        return articleDao.findByPage(params);
+        List<Article> articleList = articleDao.findByPage(params);
+
+        //去掉HTML标签，并只截取180个字符
+        for (Article article : articleList){
+            article.setHtmlContent(ParseHTMLUtil.getText(article.getHtmlContent()));
+        }
+
+        return articleList;
     }
 
     @Override

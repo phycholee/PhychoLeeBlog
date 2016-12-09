@@ -53,4 +53,43 @@ public class ParseHTMLUtil {
 
         return sb.toString();
     }
+
+    /**
+     * 获得正文内容的前180个字符
+     * @param html
+     * @return
+     */
+    public static String getText(String html){
+        StringBuilder sb = new StringBuilder();
+        String substring;
+
+        try {
+            Parser parser = new Parser(html);
+            parser.setEncoding("UTF-8");
+            NodeList nodeList = parser.parse(null);
+            if (nodeList != null){
+                for (int i=0; i< nodeList.size(); i++){
+                    Node node = nodeList.elementAt(i);
+                    String text = node.toPlainTextString();
+
+                    sb.append(text+" ");
+                    if (sb.length() > 180){
+                        break;
+                    }
+                }
+            }
+
+            if (!"".equals(sb.toString()) && sb.length() > 180){
+                substring = sb.substring(0, 180);
+            }else{
+                substring = sb.toString();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+
+        return substring+"...";
+    }
 }

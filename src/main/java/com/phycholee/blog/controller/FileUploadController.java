@@ -22,7 +22,7 @@ import java.util.Map;
  * Description: 上传文件Controller
  */
 @Controller
-@RequestMapping("/upload")
+@RequestMapping("/admin/upload")
 public class FileUploadController {
 
     //获取上传的文件夹，在application.yml中的配置
@@ -31,6 +31,8 @@ public class FileUploadController {
 
     @Autowired
     private ArticleService articleService;
+
+    final static String rootPath = "http://localhost:8080/";
 
     /**
      * 上传博客图片
@@ -74,7 +76,7 @@ public class FileUploadController {
         resultMap.put("message", "上传图片成功");
         //将'\'转成'/'
         createPath = createPath.replace("\\","/");
-        resultMap.put("url", "/"+createPath+url);
+        resultMap.put("url", rootPath+createPath+url);
         return resultMap;
     }
 
@@ -112,12 +114,11 @@ public class FileUploadController {
 
                 //将'\'转成'/'
                 createPath = createPath.replace("\\","/");
-                resultMap.put("url", "/"+createPath+url);
 
                 //将url存入数据库
                 Article article = new Article();
                 article.setId(blogId);
-                article.setJumbotron("/"+createPath+url);
+                article.setJumbotron(rootPath+createPath+url);
                 articleService.update(article);
             } catch (Exception e) {
                 e.printStackTrace();

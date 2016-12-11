@@ -1,7 +1,5 @@
 package com.phycholee.blog.model;
 
-import javax.validation.constraints.NotNull;
-
 public class Article {
 
     public final static Integer STATUS_PUBLISHED = 1;

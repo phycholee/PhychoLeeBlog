@@ -15,4 +15,6 @@ public interface ArticleDao extends BaseDao<Article> {
     //根据status获取总数
     Integer countByStatus(Integer status) throws SQLException;
 
+    Article findById(Integer id) throws SQLException;
+
 }

@@ -82,7 +82,7 @@ $(function() {
         disableGlobalDnd: true,
 
         chunked: true,
-        server: address+'upload/uploadJumbotronImage',
+        server: address+'admin/upload/uploadJumbotronImage',
         fileNumLimit: 1,
         fileSizeLimit: 10 * 1024 * 1024,    // 200 M
         fileSingleSizeLimit: 10 * 1024 * 1024    // 10 M

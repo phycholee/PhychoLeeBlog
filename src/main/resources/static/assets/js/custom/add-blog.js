@@ -17,7 +17,7 @@ $(function() {
         saveHTMLToTextarea : true,
         imageUpload : true,
         imageFormats : ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
-        imageUploadURL : address+"admin/upload/uploadPostImage"
+        imageUploadURL : address+"admin/upload/postImage"
     });
 
     $('#btn-save').on('click',function () {

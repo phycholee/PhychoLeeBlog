@@ -39,7 +39,7 @@ public class FileUploadController {
      * @param request
      * @return
      */
-    @PostMapping(value = "/uploadPostImage")
+    @PostMapping(value = "/postImage")
     @ResponseBody
     public Map<String, Object> uploadPostImage(HttpServletRequest request){
         Map<String, Object> resultMap = new HashMap<>();
@@ -86,7 +86,7 @@ public class FileUploadController {
      * @param file
      * @return
      */
-    @PostMapping("/uploadJumbotronImage")
+    @PostMapping("/jumbotronImage")
     @ResponseBody
     public Map<String, Object> uploadJumbotronImage(@RequestParam("file") MultipartFile file, HttpServletRequest request){
         Map<String, Object> resultMap = new HashMap<>();

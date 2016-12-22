@@ -10,8 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -39,10 +41,10 @@ public class FileUploadController {
      * @param request
      * @return
      */
-    @PostMapping(value = "/postImage")
-    @ResponseBody
-    public Map<String, Object> uploadPostImage(HttpServletRequest request){
-        Map<String, Object> resultMap = new HashMap<>();
+    @RequestMapping(value = "/postImage")
+    public ModelAndView uploadPostImage(HttpServletRequest request, HttpServletResponse response){
+        String dialog_id = request.getParameter("dialog_id");
+        String callback = request.getParameter("callback");
 
         MultipartHttpServletRequest multipartRequest =
                 (MultipartHttpServletRequest) request;
@@ -60,24 +62,18 @@ public class FileUploadController {
                 try {
                     //写入磁盘
                     url = FileUtil.writeImage2static(path, file);
+
+                    //将'\'转成'/'
+                    createPath = createPath.replace("\\","/");
+
+                    response.sendRedirect(callback+"?dialog_id="+dialog_id+
+                        "&success=1&message=upload success&url="+rootPath+createPath+url);
+
                 } catch (Exception e) {
                     e.printStackTrace();
-                    resultMap.put("success", 0);
-                    resultMap.put("message", "上传图片失败");
-                    return resultMap;
                 }
-        }else {
-            resultMap.put("success", 0);
-            resultMap.put("message", "上传图片为空");
-            return resultMap;
         }
-
-        resultMap.put("success", 1);
-        resultMap.put("message", "上传图片成功");
-        //将'\'转成'/'
-        createPath = createPath.replace("\\","/");
-        resultMap.put("url", rootPath+createPath+url);
-        return resultMap;
+        return null;
     }
 
 
@@ -92,12 +88,12 @@ public class FileUploadController {
         Map<String, Object> resultMap = new HashMap<>();
 
         //需要有博客存入才能写入巨幕图片
-        Integer blogId = (Integer) request.getSession().getAttribute("articleId4Jumbotron");
-        if (blogId == null){
-            resultMap.put("code", 404);
-            resultMap.put("message", "博客未创建成功");
-            return resultMap;
-        }
+//        Integer blogId = (Integer) request.getSession().getAttribute("articleId4Jumbotron");
+//        if (blogId == null){
+//            resultMap.put("code", 404);
+//            resultMap.put("message", "博客未创建成功");
+//            return resultMap;
+//        }
 
         //根据当前日期创建文件夹
         String createPath = "jumbotron" +File.separator + TimeUtil.getYearMonthDay() + File.separator;
@@ -116,10 +112,10 @@ public class FileUploadController {
                 createPath = createPath.replace("\\","/");
 
                 //将url存入数据库
-                Article article = new Article();
-                article.setId(blogId);
-                article.setJumbotron(rootPath+createPath+url);
-                articleService.update(article);
+//                Article article = new Article();
+//                article.setId(blogId);
+//                article.setJumbotron(rootPath+createPath+url);
+//                articleService.update(article);
             } catch (Exception e) {
                 e.printStackTrace();
                 resultMap.put("code", 400);
@@ -133,10 +129,13 @@ public class FileUploadController {
         }
 
         //上传成功后移除id
-        request.getSession().removeAttribute("articleId4Jumbotron");
+//        request.getSession().removeAttribute("articleId4Jumbotron");
 
         resultMap.put("code", 200);
         resultMap.put("message", "上传图片成功");
+        //将'\'转成'/'
+        createPath = createPath.replace("\\","/");
+        resultMap.put("url", rootPath+createPath+url);
         return resultMap;
     }
 }

@@ -18,7 +18,7 @@ import java.util.Map;
  * Description: 此api共后台管理网页使用，需要权限验证
  */
 @RestController
-@RequestMapping("/admin/article")
+@RequestMapping("/admin/")
 public class AdminArticleController {
 
     @Autowired
@@ -29,7 +29,8 @@ public class AdminArticleController {
      * 分页查询文章
      * @return
      */
-    @PostMapping("getArticleByPage")
+    @SuppressWarnings("Duplicates")
+    @PostMapping("articles")
     public Map<String, Object> getArticleByPage(Integer offset, Integer limit, Integer status){
         Map<String, Object> resultMap = new HashMap<>();
 
@@ -59,8 +60,8 @@ public class AdminArticleController {
      * @param article
      * @return
      */
-    @PostMapping("/addArticle")
-    public Map<String, Object> addArticle(@Validated Article article, HttpServletRequest request){
+    @PostMapping("/article")
+    public Map<String, Object> addArticle(@RequestBody Article article, HttpServletRequest request){
         Map<String, Object> resultMap = new HashMap<>();
 
         String errorMessage = "错误：保存文章失败";
@@ -85,8 +86,8 @@ public class AdminArticleController {
             articleService.insertImgSrc(article);
 
             //将id放进session中，给后面保存巨幕图用
-            Integer id = article.getId();
-            request.getSession().setAttribute("articleId4Jumbotron", id);
+//            Integer id = article.getId();
+//            request.getSession().setAttribute("articleId4Jumbotron", id);
         } catch (Exception e) {
             e.printStackTrace();
             resultMap.put("code", 400);

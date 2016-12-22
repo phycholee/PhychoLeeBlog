@@ -16,7 +16,7 @@ import java.util.Map;
  */
 
 @RestController
-@RequestMapping("/article")
+@RequestMapping("/")
 public class ArticleController {
 
     @Autowired

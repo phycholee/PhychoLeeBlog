@@ -38,7 +38,7 @@ $(function () {
 });
 function getBlogs(offset, limit) {
     $.ajax({
-        url:'/admin/article/getArticleByPage',
+        url:'/admin/articles',
         type:'post',
         data:{
             offset: offset,

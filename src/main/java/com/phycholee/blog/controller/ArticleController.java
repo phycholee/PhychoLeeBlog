@@ -64,7 +64,7 @@ public class ArticleController {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            resultMap.put("error", 400);
+            resultMap.put("code", 400);
             resultMap.put("message", "查找出错");
         }
 

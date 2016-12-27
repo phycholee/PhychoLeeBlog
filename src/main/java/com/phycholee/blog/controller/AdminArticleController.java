@@ -31,7 +31,11 @@ public class AdminArticleController {
      */
     @SuppressWarnings("Duplicates")
     @PostMapping("articles")
-    public Map<String, Object> getArticleByPage(Integer offset, Integer limit, Integer status){
+    public Map<String, Object> getArticleByPage(@RequestBody Map<String, Object> params){
+        Integer offset = (Integer) params.get("offset");
+        Integer limit = (Integer) params.get("limit");
+        Integer status = (Integer) params.get("status");
+
         Map<String, Object> resultMap = new HashMap<>();
 
         Integer count = 0;
@@ -45,7 +49,7 @@ public class AdminArticleController {
 
         } catch (SQLException e) {
             e.printStackTrace();
-            resultMap.put("error", 400);
+            resultMap.put("code", 400);
             resultMap.put("message", "查找出错");
         }
 

@@ -22,6 +22,7 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
+    @SuppressWarnings("Duplicates")
     @GetMapping("/article/{id}")
     public Map<String, Object> getArticle(@PathVariable("id") Integer id){
         Map<String, Object> resultMap = new HashMap<>();
@@ -29,9 +30,15 @@ public class ArticleController {
         Article article = null;
         try {
             article = articleService.findById(id);
+            if(Article.STATUS_SAVE.equals(article.getStatus())){
+                //不允许查找未发布的文章
+                throw new RuntimeException();
+            }
+            //不需要md文本
+            article.setMarkdownContent(null);
         } catch (Exception e) {
             e.printStackTrace();
-            resultMap.put("code", 200);
+            resultMap.put("code", 400);
             resultMap.put("message", "查找失败");
         }
 

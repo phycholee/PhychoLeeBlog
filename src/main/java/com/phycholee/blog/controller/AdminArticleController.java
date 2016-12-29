@@ -60,6 +60,30 @@ public class AdminArticleController {
     }
 
     /**
+     * 获取文章详细信息
+     * @param id
+     * @return
+     */
+    @SuppressWarnings("Duplicates")
+    @GetMapping("/article/{id}")
+    public Map<String, Object> getArticle(@PathVariable("id") Integer id){
+        Map<String, Object> resultMap = new HashMap<>();
+
+        Article article = null;
+        try {
+            article = articleService.findById(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultMap.put("code", 400);
+            resultMap.put("message", "查找失败");
+        }
+
+        resultMap.put("code", 200);
+        resultMap.put("article", article);
+        return resultMap;
+    }
+
+    /**
      * 保存文章
      * @param article
      * @return

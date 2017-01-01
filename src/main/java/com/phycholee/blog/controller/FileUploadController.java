@@ -1,8 +1,8 @@
 package com.phycholee.blog.controller;
 
-import com.phycholee.blog.model.Article;
 import com.phycholee.blog.service.ArticleService;
 import com.phycholee.blog.utils.FileUtil;
+import com.phycholee.blog.utils.PropertiesUtil;
 import com.phycholee.blog.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,7 +34,7 @@ public class FileUploadController {
     @Autowired
     private ArticleService articleService;
 
-    final static String rootPath = "http://localhost:8080/";
+    final static String rootPath = PropertiesUtil.getPropertyByKey("root");
 
     /**
      * 上传博客图片
@@ -87,14 +87,6 @@ public class FileUploadController {
     public Map<String, Object> uploadJumbotronImage(@RequestParam("file") MultipartFile file, HttpServletRequest request){
         Map<String, Object> resultMap = new HashMap<>();
 
-        //需要有博客存入才能写入巨幕图片
-//        Integer blogId = (Integer) request.getSession().getAttribute("articleId4Jumbotron");
-//        if (blogId == null){
-//            resultMap.put("code", 404);
-//            resultMap.put("message", "博客未创建成功");
-//            return resultMap;
-//        }
-
         //根据当前日期创建文件夹
         String createPath = "jumbotron" +File.separator + TimeUtil.getYearMonthDay() + File.separator;
 
@@ -111,11 +103,6 @@ public class FileUploadController {
                 //将'\'转成'/'
                 createPath = createPath.replace("\\","/");
 
-                //将url存入数据库
-//                Article article = new Article();
-//                article.setId(blogId);
-//                article.setJumbotron(rootPath+createPath+url);
-//                articleService.update(article);
             } catch (Exception e) {
                 e.printStackTrace();
                 resultMap.put("code", 400);
@@ -127,9 +114,6 @@ public class FileUploadController {
             resultMap.put("message", "上传图片为空");
             return resultMap;
         }
-
-        //上传成功后移除id
-//        request.getSession().removeAttribute("articleId4Jumbotron");
 
         resultMap.put("code", 200);
         resultMap.put("message", "上传图片成功");

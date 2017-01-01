@@ -4,9 +4,12 @@ import com.phycholee.blog.base.service.impl.BaseServiceImpl;
 import com.phycholee.blog.dao.ArticleDao;
 import com.phycholee.blog.model.Article;
 import com.phycholee.blog.service.ArticleService;
+import com.phycholee.blog.utils.FileUtil;
 import com.phycholee.blog.utils.ParseHTMLUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -19,6 +22,10 @@ import java.util.Map;
  */
 @Service
 public class ArticleServiceImpl extends BaseServiceImpl<Article> implements ArticleService {
+
+    //获取上传的文件夹，在application.yml中的配置
+    @Value("${web.upload-path}")
+    private String uploadPath;
 
     private ArticleDao articleDao;
     @Autowired
@@ -69,5 +76,22 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article> implements Arti
         }
 
         insert(article);
+    }
+
+
+    /**
+     *删除文章，并且删除文章所属的图片资源
+     * @param id
+     * @throws SQLException
+     */
+    @Override
+    @Transactional
+    public void deleteArticleAndResource(Integer id) throws SQLException {
+        Article article = findById(id);
+
+        deleteById(id);
+        //TODO 后期还会删除标签信息
+
+        FileUtil.deleteImage(article, uploadPath);
     }
 }

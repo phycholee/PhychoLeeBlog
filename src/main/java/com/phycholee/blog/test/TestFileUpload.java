@@ -1,5 +1,8 @@
 package com.phycholee.blog.test;
 
+import com.phycholee.blog.model.Article;
+import com.phycholee.blog.utils.FileUtil;
+import com.phycholee.blog.utils.PropertiesUtil;
 import com.phycholee.blog.utils.TimeUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -46,5 +49,26 @@ public class TestFileUpload {
         String a = "\\";
         a = a.replace("\\", "/");
         System.out.println(a);
+    }
+
+    @Test
+    public void deleteImage(){
+        String root = PropertiesUtil.getPropertyByKey("root");
+        Article article = new Article();
+        article.setJumbotron(root+"jumbotron/201612/aaa.jpg");
+
+        String imgSrc = root+"post/201612/bbb.jpg,"+root+"post/201612/ccc.jpg";
+        article.setImgSrc(imgSrc);
+
+        System.out.println(article.getJumbotron());
+        System.out.println(article.getImgSrc());
+
+        FileUtil.deleteImage(article, path);
+    }
+
+    @Test
+    public void testGetProperties(){
+        String root = PropertiesUtil.getPropertyByKey("root");
+        System.out.println(root);
     }
 }

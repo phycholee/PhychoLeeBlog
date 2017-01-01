@@ -17,4 +17,6 @@ public interface ArticleService extends BaseService<Article> {
     Integer countByStatus(Integer status) throws SQLException;
 
     void insertImgSrc(Article article) throws SQLException;
+
+    void deleteArticleAndResource(Integer id) throws SQLException;
 }

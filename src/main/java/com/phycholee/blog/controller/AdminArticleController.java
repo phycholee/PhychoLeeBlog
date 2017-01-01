@@ -113,9 +113,6 @@ public class AdminArticleController {
 
             articleService.insertImgSrc(article);
 
-            //将id放进session中，给后面保存巨幕图用
-//            Integer id = article.getId();
-//            request.getSession().setAttribute("articleId4Jumbotron", id);
         } catch (Exception e) {
             e.printStackTrace();
             resultMap.put("code", 400);
@@ -125,6 +122,25 @@ public class AdminArticleController {
 
         resultMap.put("code", 200);
         resultMap.put("message", "成功：保存文章成功");
+        return resultMap;
+    }
+
+    @DeleteMapping("/article/{id}")
+    public Map<String, Object> deleteArticle(@PathVariable("id") Integer id){
+        Map<String, Object> resultMap = new HashMap<>();
+
+        try {
+            articleService.deleteArticleAndResource(id);
+            System.out.println("删除id："+id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            resultMap.put("code", 400);
+            resultMap.put("message", "删除失败");
+            return resultMap;
+        }
+
+        resultMap.put("code", 200);
+        resultMap.put("message", "删除成功");
         return resultMap;
     }
 

@@ -53,17 +53,24 @@ public class TestFileUpload {
 
     @Test
     public void deleteImage(){
+//        String root = PropertiesUtil.getPropertyByKey("root");
+//        Article article = new Article();
+//        article.setJumbotron(root+"jumbotron/201612/aaa.jpg");
+//
+//        String imgSrc = root+"post/201612/bbb.jpg,"+root+"post/201612/ccc.jpg";
+//        article.setImgSrc(imgSrc);
+//
+//        System.out.println(article.getJumbotron());
+//        System.out.println(article.getImgSrc());
+//
+//        FileUtil.deleteImage(article, path);
+
         String root = PropertiesUtil.getPropertyByKey("root");
-        Article article = new Article();
-        article.setJumbotron(root+"jumbotron/201612/aaa.jpg");
 
-        String imgSrc = root+"post/201612/bbb.jpg,"+root+"post/201612/ccc.jpg";
-        article.setImgSrc(imgSrc);
+        String url = root+"jumbotron/20171/268f4155-fcb9-41df-9e7e-0adba051c4ba.jpg";
 
-        System.out.println(article.getJumbotron());
-        System.out.println(article.getImgSrc());
+        FileUtil.deleteImageByUrl(url, path);
 
-        FileUtil.deleteImage(article, path);
     }
 
     @Test

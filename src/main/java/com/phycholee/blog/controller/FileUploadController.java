@@ -122,4 +122,21 @@ public class FileUploadController {
         resultMap.put("url", rootPath+createPath+url);
         return resultMap;
     }
+
+    /**
+     * 根据url删除图片
+     * @param url
+     * @return
+     */
+    @PostMapping("deleteImage")
+    @ResponseBody
+    public Map<String, Object> deleteImage(@RequestBody Map<String, String> param){
+        Map<String, Object> resultMap = new HashMap<>();
+
+        FileUtil.deleteImageByUrl(param.get("url"), uploadPath);
+
+        resultMap.put("code", 200);
+        resultMap.put("message", "删除成功");
+        return resultMap;
+    }
 }

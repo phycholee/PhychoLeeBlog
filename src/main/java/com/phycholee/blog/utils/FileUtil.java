@@ -77,28 +77,35 @@ public class FileUtil {
      * @param article
      */
     public static void deleteImage(Article article, String uploadPath){
+        String jumbotron = article.getJumbotron();
+        String imgSrc = article.getImgSrc();
+        String root = PropertiesUtil.getPropertyByKey("root");
+
+        deleteImageByUrl(jumbotron, uploadPath);
+
+        if(imgSrc != null && !"".equals(imgSrc)){
+            String[] imgs = imgSrc.split(",");
+            for(String img : imgs){
+                deleteImageByUrl(img, uploadPath);
+            }
+        }
+    }
+
+    /**
+     * 根据url删除图片
+     * @param url
+     * @param uploadPath
+     */
+    public static void deleteImageByUrl(String url, String uploadPath){
         //确保不删除成功也能进行下去
         try {
-            String jumbotron = article.getJumbotron();
-            String imgSrc = article.getImgSrc();
             String root = PropertiesUtil.getPropertyByKey("root");
-
-            if(jumbotron != null && !"".equals(jumbotron)){
-                if (jumbotron.startsWith(root)){
-                    jumbotron = jumbotron.substring(root.length(), jumbotron.length());
+            if(url != null && !"".equals(url)){
+                if (url.startsWith(root)){
+                    url = url.substring(root.length(), url.length());
                 }
-                File file = new File(uploadPath + jumbotron);
+                File file = new File(uploadPath + url);
                 FileUtils.deleteQuietly(file);
-            }
-            if(imgSrc != null && !"".equals(imgSrc)){
-                String[] imgs = imgSrc.split(",");
-                for(String img : imgs){
-                    if (img.startsWith(root)){
-                        img = img.substring(root.length(), img.length());
-                    }
-                    File file = new File(uploadPath + img);
-                    FileUtils.deleteQuietly(file);
-                }
             }
         }catch (Exception e){
             e.printStackTrace();

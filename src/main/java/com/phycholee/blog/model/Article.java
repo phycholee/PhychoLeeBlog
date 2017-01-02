@@ -1,5 +1,7 @@
 package com.phycholee.blog.model;
 
+import java.util.List;
+
 public class Article {
 
     public final static Integer STATUS_PUBLISHED = 1;
@@ -28,6 +30,8 @@ public class Article {
     private Integer status;
 
     private String imgSrc;
+
+    private List<Tag> tags;
 
     public Integer getId() {
         return id;
@@ -123,6 +127,14 @@ public class Article {
 
     public void setImgSrc(String imgSrc) {
         this.imgSrc = imgSrc;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 
     @Override

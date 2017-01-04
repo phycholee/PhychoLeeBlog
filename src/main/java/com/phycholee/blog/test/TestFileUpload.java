@@ -78,4 +78,13 @@ public class TestFileUpload {
         String root = PropertiesUtil.getPropertyByKey("root");
         System.out.println(root);
     }
+
+    @Test
+    public void testDeleteInvalidRcs(){
+        String root = PropertiesUtil.getPropertyByKey("root");
+        String old = root+"post/20171/aaa.jpg,"+root+"post/20171/bbb.jpg";
+        String ne = root+"post/20171/aaa.jpg,"+root+"post/20171/ccc.jpg";
+
+        FileUtil.deleteInvalidImgSrc(old, ne, path);
+    }
 }

@@ -19,4 +19,6 @@ public interface ArticleService extends BaseService<Article> {
     void insertImgSrc(Article article) throws SQLException;
 
     void deleteArticleAndResource(Integer id) throws SQLException;
+
+    void updateImgsrc(Article article) throws SQLException;
 }

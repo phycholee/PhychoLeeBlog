@@ -99,9 +99,6 @@ public class AdminArticleController {
             if (article.getTitle() == null || "".equals(article.getTitle())){
                 errorMessage = "错误：标题不能为空";
                 throw new RuntimeException(errorMessage);
-            }else if (article.getSubTitle() == null || "".equals(article.getSubTitle())){
-                errorMessage = "错误：副标题不能为空";
-                throw new RuntimeException(errorMessage);
             }else if (article.getMarkdownContent() == null || "".equals(article.getMarkdownContent())){
                 errorMessage = "错误：MD内容不能为空";
                 throw new RuntimeException(errorMessage);
@@ -109,8 +106,6 @@ public class AdminArticleController {
                 errorMessage = "错误：HTML内容不能为空";
                 throw new RuntimeException(errorMessage);
             }
-
-            article.setCreateTime(TimeUtil.getDateTime());
 
             articleService.insertImgSrc(article);
 
@@ -126,6 +121,11 @@ public class AdminArticleController {
         return resultMap;
     }
 
+    /**
+     * 更新文章
+     * @param article
+     * @return
+     */
     @PutMapping("article")
     @SuppressWarnings("Duplicates")
     public Map<String, Object> updateArticle(@RequestBody Article article){
@@ -136,9 +136,6 @@ public class AdminArticleController {
             if (article.getTitle() == null || "".equals(article.getTitle())){
                 errorMessage = "错误：标题不能为空";
                 throw new RuntimeException(errorMessage);
-            }else if (article.getSubTitle() == null || "".equals(article.getSubTitle())){
-                errorMessage = "错误：副标题不能为空";
-                throw new RuntimeException(errorMessage);
             }else if (article.getMarkdownContent() == null || "".equals(article.getMarkdownContent())){
                 errorMessage = "错误：MD内容不能为空";
                 throw new RuntimeException(errorMessage);
@@ -147,7 +144,7 @@ public class AdminArticleController {
                 throw new RuntimeException(errorMessage);
             }
 
-            articleService.update(article);
+            articleService.updateImgsrc(article);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -161,6 +158,11 @@ public class AdminArticleController {
         return resultMap;
     }
 
+    /**
+     * 删除文章
+     * @param id
+     * @return
+     */
     @DeleteMapping("/article/{id}")
     public Map<String, Object> deleteArticle(@PathVariable("id") Integer id){
         Map<String, Object> resultMap = new HashMap<>();

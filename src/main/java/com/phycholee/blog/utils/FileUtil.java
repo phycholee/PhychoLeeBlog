@@ -111,4 +111,25 @@ public class FileUtil {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 更新文章后，判断哪些图片资源已被弃用，并删除资源
+     * @param oldImgSrc
+     * @param imgSrc
+     */
+    public static void deleteInvalidImgSrc(String oldImgSrc, String imgSrc, String uploadPath){
+        if (oldImgSrc==null){
+            return;
+        }
+        String[] oldUrls = oldImgSrc.split(",");
+
+        if (oldUrls.length>0){
+            for (String url : oldUrls){
+                int i = imgSrc.indexOf(url);
+                if (i<0){
+                    deleteImageByUrl(url, uploadPath);
+                }
+            }
+        }
+    }
 }

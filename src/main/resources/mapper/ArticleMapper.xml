@@ -45,7 +45,7 @@
 
   <select id="findById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
-    id, title, sub_title, author_id, create_time, likes, views,markdown_content, html_content, jumbotron, status
+    <include refid="Base_Column_List"/>
     from article
     where id = #{id,jdbcType=INTEGER}
   </select>

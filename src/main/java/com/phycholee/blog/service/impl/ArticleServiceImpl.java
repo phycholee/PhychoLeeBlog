@@ -6,6 +6,7 @@ import com.phycholee.blog.model.Article;
 import com.phycholee.blog.service.ArticleService;
 import com.phycholee.blog.utils.FileUtil;
 import com.phycholee.blog.utils.ParseHTMLUtil;
+import com.phycholee.blog.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -75,6 +76,8 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article> implements Arti
             article.setImgSrc(imgSrc);
         }
 
+        article.setCreateTime(TimeUtil.getDateTime());
+
         insert(article);
     }
 
@@ -93,5 +96,38 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article> implements Arti
         //TODO 后期还会删除标签信息
 
         FileUtil.deleteImage(article, uploadPath);
+    }
+
+    /**
+     * 更新文章，并且清除无效图片资源
+     * @param article
+     * @throws SQLException
+     */
+    @Override
+    public void updateImgsrc(Article article) throws SQLException {
+        Article oldArticle = findById(article.getId());
+        String oldJumbotron = oldArticle.getJumbotron();
+
+        //如果更新了巨幕图，将原来的巨幕图资源删除
+        if(oldJumbotron != null && !oldJumbotron.equals(article.getJumbotron())){
+            FileUtil.deleteImageByUrl(oldJumbotron, uploadPath);
+        }
+
+        if (!oldArticle.getHtmlContent().equals(article.getHtmlContent())){
+            String imgSrc = ParseHTMLUtil.getImgSrc(article.getHtmlContent());
+            if (!"".equals(imgSrc)){
+                article.setImgSrc(imgSrc);
+
+                //清除无效图片资源
+                FileUtil.deleteInvalidImgSrc(oldArticle.getImgSrc(), imgSrc, uploadPath);
+            }
+        }
+
+        //如果文章状态改变，将重设时间
+        if(!oldArticle.getStatus().equals(article.getStatus())){
+            article.setCreateTime(TimeUtil.getDateTime());
+        }
+
+        update(article);
     }
 }

@@ -117,7 +117,7 @@ public class AdminArticleController {
         }
 
         resultMap.put("code", 200);
-        resultMap.put("message", "成功：保存文章成功");
+        resultMap.put("message", "保存文章成功");
         return resultMap;
     }
 

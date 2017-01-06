@@ -84,11 +84,16 @@ public class FileUploadController {
      */
     @PostMapping("/jumbotronImage")
     @ResponseBody
-    public Map<String, Object> uploadJumbotronImage(@RequestParam("file") MultipartFile file, HttpServletRequest request){
+    public Map<String, Object> uploadJumbotronImage(@RequestParam("file") MultipartFile file, String data){
         Map<String, Object> resultMap = new HashMap<>();
 
         //根据当前日期创建文件夹
-        String createPath = "jumbotron" +File.separator + TimeUtil.getYearMonthDay() + File.separator;
+        String createPath = "jumbotron" + File.separator + TimeUtil.getYearMonthDay() + File.separator;
+
+        if(data != null && "tag".equals(data)){
+            //标签巨幕图放在专属文件夹
+            createPath = "jumbotron" + File.separator+"tag" + File.separator;
+        }
 
         String path = uploadPath + File.separator + createPath;
 
@@ -125,7 +130,7 @@ public class FileUploadController {
 
     /**
      * 根据url删除图片
-     * @param url
+     * @param param
      * @return
      */
     @PostMapping("deleteImage")

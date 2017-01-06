@@ -8,6 +8,8 @@ public class Tag {
 
     private String description;
 
+    private String jumbotron;
+
     public Integer getId() {
         return id;
     }
@@ -30,5 +32,13 @@ public class Tag {
 
     public void setDescription(String description) {
         this.description = description == null ? null : description.trim();
+    }
+
+    public String getJumbotron() {
+        return jumbotron;
+    }
+
+    public void setJumbotron(String jumbotron) {
+        this.jumbotron = jumbotron;
     }
 }

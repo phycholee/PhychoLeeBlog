@@ -5,9 +5,10 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="jumbotron" jdbcType="VARCHAR" property="jumbotron" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, name, description
+    id, name, description, jumbotron
   </sql>
   <select id="findById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -21,9 +22,9 @@
   </delete>
 
   <insert id="insert" parameterType="com.phycholee.blog.model.Tag">
-    insert into tag (name, description
+    insert into tag (name, description, jumbotron
       )
-    values (#{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}
+    values (#{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{jumbotron,jdbcType=VARCHAR}
       )
   </insert>
 
@@ -35,6 +36,9 @@
       </if>
       <if test="description != null">
         description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="jumbotron != null">
+        jumbotron = #{jumbotron,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

@@ -3,12 +3,11 @@ package com.phycholee.blog.controller;
 import com.phycholee.blog.model.Tag;
 import com.phycholee.blog.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -54,6 +53,27 @@ public class TagController {
         resultMap.put("code", 200);
         resultMap.put("message", "保存标签成功");
 
+        return resultMap;
+    }
+
+    /**
+     * 获取tags集合
+     * @return
+     */
+    @GetMapping("/tags")
+    public Map<String, Object> getTags(){
+        Map<String, Object> resultMap = new HashMap<>();
+
+        List<Tag> tags = null;
+        try {
+            tags = tagService.findTags();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+        resultMap.put("code", 200);
+        resultMap.put("rows", tags);
         return resultMap;
     }
 }

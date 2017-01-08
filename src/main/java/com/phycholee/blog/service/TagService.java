@@ -14,4 +14,6 @@ public interface TagService extends BaseService<Tag> {
 
     List<Tag> findTags() throws SQLException;
 
+    void updateImgsrc(Tag tag) throws SQLException;
+
 }

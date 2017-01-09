@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -34,5 +35,14 @@ public class TestArticle {
     public void testCount() throws SQLException {
         Integer status = articleServicel.countByStatus(2);
         System.out.println(status);
+    }
+
+    @Test
+    public void testEquals(){
+        Integer[] a = {1, 2, 3};
+        Integer[] b = {2, 1, 3};
+
+        System.out.println(Arrays.equals(a, b));
+
     }
 }

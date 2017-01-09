@@ -2,6 +2,7 @@ package com.phycholee.blog.controller;
 
 import com.phycholee.blog.model.Article;
 import com.phycholee.blog.service.ArticleService;
+import com.phycholee.blog.service.TagService;
 import com.phycholee.blog.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,9 @@ public class AdminArticleController {
 
     @Autowired
     private ArticleService articleService;
+
+    @Autowired
+    private TagService tagService;
 
 
     /**
@@ -72,6 +77,8 @@ public class AdminArticleController {
         Article article = null;
         try {
             article = articleService.findById(id);
+            //查找文章所有标签id
+            article.setTagIds(tagService.findTagIdsBayArticle(article.getId()));
         } catch (Exception e) {
             e.printStackTrace();
             resultMap.put("code", 400);

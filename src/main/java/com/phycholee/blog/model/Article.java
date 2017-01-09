@@ -1,5 +1,6 @@
 package com.phycholee.blog.model;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class Article {
@@ -31,7 +32,7 @@ public class Article {
 
     private String imgSrc;
 
-    private List<Tag> tags;
+    private Integer[] tagIds;
 
     public Integer getId() {
         return id;
@@ -129,12 +130,12 @@ public class Article {
         this.imgSrc = imgSrc;
     }
 
-    public List<Tag> getTags() {
-        return tags;
+    public Integer[] getTagIds() {
+        return tagIds;
     }
 
-    public void setTags(List<Tag> tags) {
-        this.tags = tags;
+    public void setTagIds(Integer[] tagIds) {
+        this.tagIds = tagIds;
     }
 
     @Override
@@ -151,6 +152,8 @@ public class Article {
                 ", htmlContent='" + htmlContent + '\'' +
                 ", jumbotron='" + jumbotron + '\'' +
                 ", status=" + status +
+                ", imgSrc='" + imgSrc + '\'' +
+                ", tagIds=" + Arrays.toString(tagIds) +
                 '}';
     }
 }

@@ -4,6 +4,7 @@ import com.phycholee.blog.base.service.impl.BaseServiceImpl;
 import com.phycholee.blog.dao.ArticleDao;
 import com.phycholee.blog.model.Article;
 import com.phycholee.blog.service.ArticleService;
+import com.phycholee.blog.service.TagService;
 import com.phycholee.blog.utils.FileUtil;
 import com.phycholee.blog.utils.ParseHTMLUtil;
 import com.phycholee.blog.utils.TimeUtil;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +36,9 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article> implements Arti
         this.articleDao = articleDao;
         super.setDao(articleDao);
     }
+
+    @Autowired
+    private TagService tagService;
 
     /**
      * 分页查找文章
@@ -65,11 +70,12 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article> implements Arti
     }
 
     /**
-     * 保存文章图片链接到数据库
+     * 保存文章内容,图片链接,标签
      * @param article
      * @throws SQLException
      */
     @Override
+    @Transactional
     public void insertImgSrc(Article article) throws SQLException {
         String imgSrc = ParseHTMLUtil.getImgSrc(article.getHtmlContent());
         if (!"".equals(imgSrc)){
@@ -79,6 +85,12 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article> implements Arti
         article.setCreateTime(TimeUtil.getDateTime());
 
         insert(article);
+
+        //插值进中间表
+        Integer[] tagIds = article.getTagIds();
+        if(tagIds != null && tagIds.length > 0){
+            tagService.insertArticleTag(article.getId(), tagIds);
+        }
     }
 
 
@@ -92,8 +104,10 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article> implements Arti
     public void deleteArticleAndResource(Integer id) throws SQLException {
         Article article = findById(id);
 
+        //删除文章标签信息
+        tagService.deleteArticleTag(id);
+
         deleteById(id);
-        //TODO 后期还会删除标签信息
 
         FileUtil.deleteImage(article, uploadPath);
     }
@@ -104,6 +118,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article> implements Arti
      * @throws SQLException
      */
     @Override
+    @Transactional
     public void updateImgsrc(Article article) throws SQLException {
         Article oldArticle = findById(article.getId());
         String oldJumbotron = oldArticle.getJumbotron();
@@ -129,5 +144,12 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article> implements Arti
         }
 
         update(article);
+
+        //修改中间表值, 先全部删除，再重新插入
+        Integer[] tagIds = article.getTagIds();
+        tagService.deleteArticleTag(article.getId());
+        if(tagIds != null && tagIds.length > 0){
+            tagService.insertArticleTag(article.getId(), tagIds);
+        }
     }
 }

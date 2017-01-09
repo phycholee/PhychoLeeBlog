@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by PhychoLee on 2016/11/9 21:09.
@@ -56,5 +58,62 @@ public class TagServiceImpl extends BaseServiceImpl<Tag> implements TagService {
         }
 
         update(tag);
+    }
+
+    /**
+     * 删除标签和巨幕图
+     * @param id
+     * @throws SQLException
+     */
+    @Override
+    public void deleteImgsrc(Integer id) throws SQLException {
+        Tag tag = findById(id);
+
+        //TODO 后期需要判断此标签下是否有文章，如有，将不能删除
+
+        String jumbotron = tag.getJumbotron();
+
+        //删除巨幕图
+        if(jumbotron != null){
+            FileUtil.deleteImageByUrl(jumbotron, uploadPath);
+        }
+
+        deleteById(id);
+    }
+
+    /**
+     * 插入文章标签中间表
+     * @param articleId
+     * @param tagIds
+     * @throws SQLException
+     */
+    @Override
+    public void insertArticleTag(Integer articleId, Integer[] tagIds) throws SQLException {
+        HashMap<String, Object> params = new HashMap<>();
+        params.put("articleId", articleId);
+        params.put("tagIds", tagIds);
+
+        tagDao.insertArticleTag(params);
+    }
+
+    /**
+     * 删除文章所有标签
+     * @param articleId
+     * @throws SQLException
+     */
+    @Override
+    public void deleteArticleTag(Integer articleId) throws SQLException {
+        tagDao.deleteArticleTag(articleId);
+    }
+
+    /**
+     * 查找文章的标签id
+     * @param articleId
+     * @return
+     * @throws SQLException
+     */
+    @Override
+    public Integer[] findTagIdsBayArticle(Integer articleId) throws SQLException {
+        return tagDao.findTagIdsBayArticle(articleId);
     }
 }

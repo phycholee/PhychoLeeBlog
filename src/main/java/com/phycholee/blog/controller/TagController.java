@@ -68,7 +68,7 @@ public class TagController {
         List<Tag> tags = null;
         try {
             tags = tagService.findTags();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -100,7 +100,7 @@ public class TagController {
             }
 
             tagService.updateImgsrc(tag);
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             resultMap.put("code", 400);
             resultMap.put("message", errorMessage);
@@ -109,6 +109,30 @@ public class TagController {
 
         resultMap.put("code", 200);
         resultMap.put("message", "修改标签成功");
+        return resultMap;
+    }
+
+    /**
+     * 删除标签和巨幕图
+     * @param id
+     * @return
+     */
+    @GetMapping("/tag/{id}")
+    public Map<String, Object> deleteTag(@PathVariable("id") Integer id){
+        Map<String, Object> resultMap = new HashMap<>();
+
+        try {
+            tagService.deleteImgsrc(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            resultMap.put("code", 400);
+            resultMap.put("message", "删除标签失败");
+            return resultMap;
+        }
+
+        resultMap.put("code", 200);
+        resultMap.put("message", "删除标签成功");
         return resultMap;
     }
 }

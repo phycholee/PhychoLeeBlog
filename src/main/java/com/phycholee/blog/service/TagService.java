@@ -5,6 +5,7 @@ import com.phycholee.blog.model.Tag;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by PhychoLee on 2016/11/9 21:08.
@@ -15,5 +16,13 @@ public interface TagService extends BaseService<Tag> {
     List<Tag> findTags() throws SQLException;
 
     void updateImgsrc(Tag tag) throws SQLException;
+
+    void deleteImgsrc(Integer id) throws SQLException;
+
+    void insertArticleTag(Integer articleId, Integer[] tagIds) throws SQLException;
+
+    void deleteArticleTag(Integer articleId) throws SQLException;
+
+    Integer[] findTagIdsBayArticle(Integer articleId) throws SQLException;
 
 }

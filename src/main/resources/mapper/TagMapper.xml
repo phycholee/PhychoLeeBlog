@@ -11,11 +11,34 @@
     id, name, description, jumbotron
   </sql>
 
-    <select id="findTags" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from tag
-    </select>
+  <!--插入中间表-->
+  <select id="insertArticleTag" parameterType="java.util.Map">
+    insert into article_tag(a_id, t_id)
+    values
+    <foreach collection="tagIds" item="tagId" separator=",">
+      (#{articleId}, #{tagId})
+    </foreach>
+  </select>
+
+  <!--删除文章所有标签-->
+  <delete id="deleteArticleTag" parameterType="java.lang.Integer">
+    delete from article_tag
+    where
+    a_id = #{articleId}
+  </delete>
+
+  <select id="findTagIdsBayArticle" parameterType="java.lang.Integer" resultType="Integer">
+    select t_id from article_tag
+    where
+    a_id = #{articleId}
+  </select>
+
+  <!--查找所有标签-->
+  <select id="findTags" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List"/>
+      from tag
+  </select>
 
   <select id="findById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 

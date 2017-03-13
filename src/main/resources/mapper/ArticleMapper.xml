@@ -21,10 +21,65 @@
     id, title, sub_title, author_id, create_time, likes, views, markdown_content, html_content, jumbotron, status, img_src
   </sql>
 
-    <!--文章列表需要的信息-->
+  <!--文章列表需要的信息-->
   <sql id="Just_For_List">
     id, title, sub_title, author_id, create_time, html_content, status
   </sql>
+
+  <sql id="Condition_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+
+  <select id="selectByCondition" parameterType="com.phycholee.blog.model.ArticleCriteria" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from article
+    <if test="_parameter != null">
+      <include refid="Condition_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limitStart != null and limitStart >= 0">
+      limit limitStart limitEnd
+    </if>
+  </select>
+
+  <select id="countByCondition" parameterType="com.phycholee.blog.model.ArticleCriteria" resultType="java.lang.Integer">
+    select count(*) from article
+    <if test="_parameter != null">
+      <include refid="Condition_Where_Clause" />
+    </if>
+  </select>
 
   <!--根据status获取总数-->
   <select id="countByStatus" parameterType="java.lang.Integer" resultType="java.lang.Integer">

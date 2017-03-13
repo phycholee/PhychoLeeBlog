@@ -3,11 +3,14 @@ package com.phycholee.blog.service.impl;
 import com.phycholee.blog.base.service.impl.BaseServiceImpl;
 import com.phycholee.blog.dao.TagDao;
 import com.phycholee.blog.model.Tag;
+import com.phycholee.blog.model.TagCriteria;
 import com.phycholee.blog.service.TagService;
 import com.phycholee.blog.utils.FileUtil;
+import com.phycholee.blog.utils.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -40,6 +43,34 @@ public class TagServiceImpl extends BaseServiceImpl<Tag> implements TagService {
     @Override
     public List<Tag> findTags() throws SQLException {
         return tagDao.findTags();
+    }
+
+    /**
+     * 条件查询
+     * @param params
+     * @return
+     */
+    @Override
+    public Pager findTagsByCondition(Map<String, Object> params){
+        Pager<Tag> pager = new Pager<>();
+
+        TagCriteria tagCriteria = new TagCriteria();
+        TagCriteria.Criteria criteria = tagCriteria.createCriteria();
+
+        setCriteria(criteria, params);
+
+        pager.setData(tagDao.selectByCondition(tagCriteria));
+        pager.setTotal(tagDao.countByCondition(tagCriteria));
+
+        return pager;
+    }
+
+    private void setCriteria(TagCriteria.Criteria criteria, Map<String, Object> params) {
+        String name = params.get("name") == null ? "" : params.get("name").toString();
+        if (!StringUtils.isEmpty(name)){
+            criteria.andNameEqualTo(name);
+        }
+
     }
 
     /**
@@ -114,6 +145,8 @@ public class TagServiceImpl extends BaseServiceImpl<Tag> implements TagService {
      */
     @Override
     public Integer[] findTagIdsBayArticle(Integer articleId) throws SQLException {
-        return tagDao.findTagIdsBayArticle(articleId);
+        return tagDao.findTagIdsByArticle(articleId);
     }
+
+
 }

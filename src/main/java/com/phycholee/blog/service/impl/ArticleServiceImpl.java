@@ -3,15 +3,18 @@ package com.phycholee.blog.service.impl;
 import com.phycholee.blog.base.service.impl.BaseServiceImpl;
 import com.phycholee.blog.dao.ArticleDao;
 import com.phycholee.blog.model.Article;
+import com.phycholee.blog.model.ArticleCriteria;
 import com.phycholee.blog.service.ArticleService;
 import com.phycholee.blog.service.TagService;
 import com.phycholee.blog.utils.FileUtil;
+import com.phycholee.blog.utils.Pager;
 import com.phycholee.blog.utils.ParseHTMLUtil;
 import com.phycholee.blog.utils.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -63,6 +66,8 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article> implements Arti
 
         return articleList;
     }
+
+
 
     @Override
     public Integer countByStatus(Integer status) throws SQLException {
@@ -151,5 +156,42 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article> implements Arti
         if(tagIds != null && tagIds.length > 0){
             tagService.insertArticleTag(article.getId(), tagIds);
         }
+    }
+
+    /**
+     * 条件查询
+     * @param params
+     * @return
+     */
+    @Override
+    public Pager findArticlesByCondition(Map<String, Object> params) {
+
+        Pager<Article> pager = new Pager<>();
+
+        int offset = params.get("offset") == null ? -1 : (StringUtils.isEmpty(params.get("offset").toString()) ? -1 : Integer.parseInt(params.get("offset").toString()));
+        int limit = params.get("limit") == null ? -1 : (StringUtils.isEmpty(params.get("limit").toString()) ? -1 : Integer.parseInt(params.get("limit").toString()));
+
+        ArticleCriteria articleCriteria = new ArticleCriteria();
+        ArticleCriteria.Criteria criteria = articleCriteria.createCriteria();
+        setCriteria(criteria, params);
+
+        articleCriteria.setLimitStart(offset);
+        articleCriteria.setLimitEnd(limit);
+
+        return pager;
+    }
+
+    private void setCriteria(ArticleCriteria.Criteria criteria, Map<String, Object> params) {
+        String title = params.get("title") == null ? "" : params.get("title").toString();
+        String subTitle = params.get("subTitle") == null ? "" : params.get("subTitle").toString();
+        int status = params.get("status") == null ? -1 : (StringUtils.isEmpty(params.get("status").toString()) ? -1 : Integer.parseInt(params.get("status").toString()));
+
+        if (!StringUtils.isEmpty(title))
+            criteria.andTitleEqualTo(title);
+        if (!StringUtils.isEmpty(subTitle))
+            criteria.andSubTitleEqualTo(subTitle);
+        if (status > -1)
+            criteria.andStatusEqualTo(status);
+
     }
 }

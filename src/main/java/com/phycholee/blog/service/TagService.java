@@ -2,6 +2,7 @@ package com.phycholee.blog.service;
 
 import com.phycholee.blog.base.service.BaseService;
 import com.phycholee.blog.model.Tag;
+import com.phycholee.blog.utils.Pager;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -24,5 +25,7 @@ public interface TagService extends BaseService<Tag> {
     void deleteArticleTag(Integer articleId) throws SQLException;
 
     Integer[] findTagIdsBayArticle(Integer articleId) throws SQLException;
+
+    Pager findTagsByCondition(Map<String, Object> params);
 
 }

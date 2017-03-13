@@ -2,6 +2,7 @@ package com.phycholee.blog.dao;
 
 import com.phycholee.blog.base.dao.BaseDao;
 import com.phycholee.blog.model.Article;
+import com.phycholee.blog.model.ArticleCriteria;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -16,5 +17,9 @@ public interface ArticleDao extends BaseDao<Article> {
     Integer countByStatus(Integer status) throws SQLException;
 
     Article findById(Integer id) throws SQLException;
+
+    List<Article> selectByCondition(ArticleCriteria criteria);
+
+    int countByCondition(ArticleCriteria criteria);
 
 }

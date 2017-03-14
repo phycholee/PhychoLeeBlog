@@ -3,14 +3,12 @@ package com.phycholee.blog.controller;
 import com.phycholee.blog.model.Article;
 import com.phycholee.blog.service.ArticleService;
 import com.phycholee.blog.service.TagService;
-import com.phycholee.blog.utils.TimeUtil;
+import com.phycholee.blog.utils.Pager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,31 +35,29 @@ public class AdminArticleController {
     @SuppressWarnings("Duplicates")
     @PostMapping("articles")
     public Map<String, Object> getArticleByPage(@RequestBody Map<String, Object> params){
-        Integer offset = (Integer) params.get("offset");
-        Integer limit = (Integer) params.get("limit");
-        Integer status = (Integer) params.get("status");
+        Integer offset = params.get("offset") == null ? -1 : (StringUtils.isEmpty(params.get("offset").toString()) ? -1 : Integer.parseInt(params.get("offset").toString()));
+        Integer limit = params.get("limit") == null ? -1 : (StringUtils.isEmpty(params.get("limit").toString()) ? -1 : Integer.parseInt(params.get("limit").toString()));
+        Integer status = params.get("status") == null ? -1 : (StringUtils.isEmpty(params.get("status").toString()) ? -1 : Integer.parseInt(params.get("status").toString()));
 
         Map<String, Object> resultMap = new HashMap<>();
 
-        Integer count = 0;
-        List<Article> articleList = null;
         try {
-            count = articleService.countByStatus(status);
-            if (count != null && !count.equals(0)){
-                articleList = articleService.findByPage(offset, limit, status);
-            }
-            System.out.println(offset+limit+status+"总数："+count);
+            Map<String, Object> params2 = new HashMap<>();
+            params2.put("offset", offset);
+            params2.put("limit", limit);
+            params2.put("status", status);
+            Pager pager = articleService.findArticlesByCondition(params2);
 
-        } catch (SQLException e) {
+            resultMap.put("code", 200);
+            resultMap.put("rows", pager.getData());
+            resultMap.put("total", pager.getTotal());
+            return resultMap;
+        } catch (Exception e) {
             e.printStackTrace();
             resultMap.put("code", 400);
             resultMap.put("message", "查找出错");
+            return resultMap;
         }
-
-        resultMap.put("code", 200);
-        resultMap.put("total", count);
-        resultMap.put("rows", articleList);
-        return resultMap;
     }
 
     /**

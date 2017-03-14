@@ -178,6 +178,11 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article> implements Arti
         articleCriteria.setLimitStart(offset);
         articleCriteria.setLimitEnd(limit);
 
+        articleCriteria.setOrderByClause("create_time desc");
+
+        pager.setData(articleDao.selectByCondition(articleCriteria));
+        pager.setTotal(articleDao.countByCondition(articleCriteria));
+
         return pager;
     }
 

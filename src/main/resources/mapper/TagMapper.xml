@@ -55,7 +55,7 @@
       order by ${orderByClause}
     </if>
     <if test="limitStart != null and limitStart >= 0">
-      limit limitStart limitEnd
+      limit #{limitStart}, #{limitEnd}
     </if>
   </select>
 

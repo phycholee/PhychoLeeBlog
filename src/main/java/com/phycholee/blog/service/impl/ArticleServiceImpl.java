@@ -170,6 +170,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article> implements Arti
 
         int offset = params.get("offset") == null ? -1 : (StringUtils.isEmpty(params.get("offset").toString()) ? -1 : Integer.parseInt(params.get("offset").toString()));
         int limit = params.get("limit") == null ? -1 : (StringUtils.isEmpty(params.get("limit").toString()) ? -1 : Integer.parseInt(params.get("limit").toString()));
+        int tagId = params.get("tagId") == null ? -1 : (StringUtils.isEmpty(params.get("tagId").toString()) ? -1 : Integer.parseInt(params.get("tagId").toString()));
 
         ArticleCriteria articleCriteria = new ArticleCriteria();
         ArticleCriteria.Criteria criteria = articleCriteria.createCriteria();
@@ -177,6 +178,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article> implements Arti
 
         articleCriteria.setLimitStart(offset);
         articleCriteria.setLimitEnd(limit);
+        articleCriteria.setTagId(tagId);
 
         articleCriteria.setOrderByClause("create_time desc");
 
@@ -192,9 +194,9 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article> implements Arti
         int status = params.get("status") == null ? -1 : (StringUtils.isEmpty(params.get("status").toString()) ? -1 : Integer.parseInt(params.get("status").toString()));
 
         if (!StringUtils.isEmpty(title))
-            criteria.andTitleEqualTo(title);
+            criteria.andTitleLike("%" + title + "%");
         if (!StringUtils.isEmpty(subTitle))
-            criteria.andSubTitleEqualTo(subTitle);
+            criteria.andSubTitleLike("%" + subTitle + "%");
         if (status > -1)
             criteria.andStatusEqualTo(status);
 

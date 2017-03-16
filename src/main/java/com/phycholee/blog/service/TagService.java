@@ -24,7 +24,7 @@ public interface TagService extends BaseService<Tag> {
 
     void deleteArticleTag(Integer articleId) throws SQLException;
 
-    Integer[] findTagIdsBayArticle(Integer articleId) throws SQLException;
+    List<Tag> findTagsBayArticle(Integer articleId) throws SQLException;
 
     Pager findTagsByCondition(Map<String, Object> params);
 

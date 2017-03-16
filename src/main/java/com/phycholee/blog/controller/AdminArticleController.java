@@ -34,10 +34,12 @@ public class AdminArticleController {
      */
     @SuppressWarnings("Duplicates")
     @PostMapping("articles")
-    public Map<String, Object> getArticleByPage(@RequestBody Map<String, Object> params){
+    public Map<String, Object> getArticles(@RequestBody Map<String, Object> params){
         Integer offset = params.get("offset") == null ? -1 : (StringUtils.isEmpty(params.get("offset").toString()) ? -1 : Integer.parseInt(params.get("offset").toString()));
         Integer limit = params.get("limit") == null ? -1 : (StringUtils.isEmpty(params.get("limit").toString()) ? -1 : Integer.parseInt(params.get("limit").toString()));
         Integer status = params.get("status") == null ? -1 : (StringUtils.isEmpty(params.get("status").toString()) ? -1 : Integer.parseInt(params.get("status").toString()));
+        Integer tagId = params.get("tagId") == null ? -1 : (StringUtils.isEmpty(params.get("tagId").toString()) ? -1 : Integer.parseInt(params.get("tagId").toString()));
+        String title = params.get("title") == null ? "" : params.get("title").toString();
 
         Map<String, Object> resultMap = new HashMap<>();
 
@@ -45,7 +47,11 @@ public class AdminArticleController {
             Map<String, Object> params2 = new HashMap<>();
             params2.put("offset", offset);
             params2.put("limit", limit);
-            params2.put("status", status);
+            if (status >-1 )
+                params2.put("status", status);
+            if (tagId > -1)
+                params2.put("tagId", tagId);
+            params2.put("title", title);
             Pager pager = articleService.findArticlesByCondition(params2);
 
             resultMap.put("code", 200);
@@ -74,7 +80,7 @@ public class AdminArticleController {
         try {
             article = articleService.findById(id);
             //查找文章所有标签id
-            article.setTagIds(tagService.findTagIdsBayArticle(article.getId()));
+            article.setTags(tagService.findTagsBayArticle(article.getId()));
         } catch (Exception e) {
             e.printStackTrace();
             resultMap.put("code", 400);

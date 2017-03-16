@@ -1,5 +1,6 @@
 package com.phycholee.blog.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -33,6 +34,8 @@ public class Article {
     private String imgSrc;
 
     private Integer[] tagIds;
+
+    private List<Tag> tags = new ArrayList<>();
 
     public Integer getId() {
         return id;
@@ -136,6 +139,14 @@ public class Article {
 
     public void setTagIds(Integer[] tagIds) {
         this.tagIds = tagIds;
+    }
+
+    public List<Tag> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<Tag> tags) {
+        this.tags = tags;
     }
 
     @Override

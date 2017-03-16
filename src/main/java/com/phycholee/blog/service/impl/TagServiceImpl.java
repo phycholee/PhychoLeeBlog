@@ -144,8 +144,8 @@ public class TagServiceImpl extends BaseServiceImpl<Tag> implements TagService {
      * @throws SQLException
      */
     @Override
-    public Integer[] findTagIdsBayArticle(Integer articleId) throws SQLException {
-        return tagDao.findTagIdsByArticle(articleId);
+    public List<Tag> findTagsBayArticle(Integer articleId) throws SQLException {
+        return tagDao.findTagsByArticle(articleId);
     }
 
 

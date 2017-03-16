@@ -63,6 +63,9 @@
     </if>
     <include refid="Base_Column_List" />
     from article
+    <if test="tagId != null and tagId >= 0">
+      join article_tag ar on (ar.a_id = id and ar.t_id = #{tagId})
+    </if>
     <if test="_parameter != null">
       <include refid="Condition_Where_Clause" />
     </if>
@@ -76,6 +79,9 @@
 
   <select id="countByCondition" parameterType="com.phycholee.blog.model.ArticleCriteria" resultType="java.lang.Integer">
     select count(*) from article
+    <if test="tagId != null and tagId >= 0">
+      join article_tag ar on (ar.a_id = id and ar.t_id = #{tagId})
+    </if>
     <if test="_parameter != null">
       <include refid="Condition_Where_Clause" />
     </if>

@@ -16,7 +16,7 @@ public interface TagDao extends BaseDao<Tag> {
 
     void deleteArticleTag(Integer articleId) throws SQLException;
 
-    Integer[] findTagIdsByArticle(Integer articleId) throws SQLException;
+    List<Tag> findTagsByArticle(Integer articleId) throws SQLException;
 
     List<Tag> selectByCondition(TagCriteria condition);
 

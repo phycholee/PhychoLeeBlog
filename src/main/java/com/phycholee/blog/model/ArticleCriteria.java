@@ -16,6 +16,16 @@ public class ArticleCriteria {
 
     protected int limitEnd = -1;
 
+    protected int tagId = -1;
+
+    public int getTagId() {
+        return tagId;
+    }
+
+    public void setTagId(int tagId) {
+        this.tagId = tagId;
+    }
+
     public int getLimitStart() {
         return limitStart;
     }

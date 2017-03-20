@@ -3,6 +3,7 @@ package com.phycholee.blog.controller;
 import com.phycholee.blog.model.Article;
 import com.phycholee.blog.service.ArticleService;
 import com.phycholee.blog.utils.Pager;
+import com.phycholee.blog.utils.ParseHTMLUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -68,6 +69,11 @@ public class ArticleController {
             params2.put("limit", limit);
             params2.put("status", status);
             Pager pager = articleService.findArticlesByCondition(params2);
+
+            List<Article> articles = pager.getData();
+            for (Article article : articles) {
+                article.setHtmlContent(ParseHTMLUtil.getText(article.getHtmlContent()));
+            }
 
             resultMap.put("code", 200);
             resultMap.put("rows", pager.getData());

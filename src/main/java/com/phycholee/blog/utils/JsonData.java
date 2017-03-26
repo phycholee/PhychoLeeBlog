@@ -34,13 +34,13 @@ public class JsonData {
         return new JsonData(CODE_ERROR, msg);
     }
 
-    private JsonData(int code, String msg, Object data) {
+    protected JsonData(int code, String msg, Object data) {
         this.code = code;
         this.msg = msg;
         this.data = data;
     }
 
-    private JsonData(int code, String msg) {
+    protected JsonData(int code, String msg) {
         this.code = code;
         this.msg = msg;
     }

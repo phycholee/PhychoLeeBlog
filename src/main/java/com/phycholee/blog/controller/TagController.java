@@ -3,6 +3,7 @@ package com.phycholee.blog.controller;
 import com.phycholee.blog.model.Tag;
 import com.phycholee.blog.service.TagService;
 import com.phycholee.blog.utils.JsonData;
+import com.phycholee.blog.utils.PagerData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,20 +28,14 @@ public class TagController {
      * @return
      */
     @GetMapping("/tags")
-    public Map<String, Object> getTags(){
-        Map<String, Object> resultMap = new HashMap<>();
-
-        List<Tag> tags = null;
+    public JsonData getTags(){
         try {
-            tags = tagService.findTags();
+            List<Tag> tags = tagService.findTags();
+            return PagerData.page(tags, tags.size());
         } catch (Exception e) {
             e.printStackTrace();
+            return JsonData.error();
         }
-
-
-        resultMap.put("code", 200);
-        resultMap.put("rows", tags);
-        return resultMap;
     }
 
     /**

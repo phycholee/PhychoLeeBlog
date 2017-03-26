@@ -61,7 +61,7 @@
     <if test="distinct">
       distinct
     </if>
-    <include refid="Base_Column_List" />
+    <include refid="Just_For_List" />
     from article
     <if test="tagId != null and tagId >= 0">
       join article_tag ar on (ar.a_id = id and ar.t_id = #{tagId})

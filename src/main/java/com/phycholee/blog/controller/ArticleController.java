@@ -2,7 +2,9 @@ package com.phycholee.blog.controller;
 
 import com.phycholee.blog.model.Article;
 import com.phycholee.blog.service.ArticleService;
+import com.phycholee.blog.utils.JsonData;
 import com.phycholee.blog.utils.Pager;
+import com.phycholee.blog.utils.PagerData;
 import com.phycholee.blog.utils.ParseHTMLUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -27,47 +29,46 @@ public class ArticleController {
 
     @SuppressWarnings("Duplicates")
     @GetMapping("/article/{id}")
-    public Map<String, Object> getArticle(@PathVariable("id") Integer id){
+    public JsonData getArticle(@PathVariable("id") Integer id){
         Map<String, Object> resultMap = new HashMap<>();
 
-        Article article = null;
         try {
-            article = articleService.findById(id);
+            Article article = articleService.findById(id);
             if(Article.STATUS_SAVE.equals(article.getStatus())){
                 //不允许查找未发布的文章
                 throw new RuntimeException();
             }
             //不需要md文本
             article.setMarkdownContent(null);
+
+            return JsonData.success(article);
         } catch (Exception e) {
             e.printStackTrace();
-            resultMap.put("code", 400);
-            resultMap.put("message", "查找失败");
+            return JsonData.error();
         }
-
-        resultMap.put("code", 200);
-        resultMap.put("article", article);
-        return resultMap;
     }
 
     /**
-     * 分页查询文章
+     * 条件查询文章
      * @return
      */
     @SuppressWarnings("Duplicates")
     @PostMapping("/articles")
-    public Map<String, Object> getArticleByPage(@RequestBody Map<String, Object> params){
+    public JsonData getArticleByPage(@RequestBody Map<String, Object> params){
         Integer offset = params.get("offset") == null ? -1 : (StringUtils.isEmpty(params.get("offset").toString()) ? -1 : Integer.parseInt(params.get("offset").toString()));
         Integer limit = params.get("limit") == null ? -1 : (StringUtils.isEmpty(params.get("limit").toString()) ? -1 : Integer.parseInt(params.get("limit").toString()));
+        Integer tagId = params.get("tagId") == null ? -1 : (StringUtils.isEmpty(params.get("tagId").toString()) ? -1 : Integer.parseInt(params.get("tagId").toString()));
         Integer status = Article.STATUS_PUBLISHED;
 
-        Map<String, Object> resultMap = new HashMap<>();
+        Map<String, Object> params2 = new HashMap<>();
+        params2.put("offset", offset);
+        params2.put("limit", limit);
+        params2.put("status", status);
+        if (tagId > -1){
+            params2.put("tagId", tagId);
+        }
 
         try {
-            Map<String, Object> params2 = new HashMap<>();
-            params2.put("offset", offset);
-            params2.put("limit", limit);
-            params2.put("status", status);
             Pager pager = articleService.findArticlesByCondition(params2);
 
             List<Article> articles = pager.getData();
@@ -75,15 +76,11 @@ public class ArticleController {
                 article.setHtmlContent(ParseHTMLUtil.getText(article.getHtmlContent()));
             }
 
-            resultMap.put("code", 200);
-            resultMap.put("rows", pager.getData());
-            resultMap.put("total", pager.getTotal());
-            return resultMap;
+            return PagerData.page(pager.getData(), pager.getTotal());
         } catch (Exception e) {
             e.printStackTrace();
-            resultMap.put("code", 400);
-            resultMap.put("message", "查找出错");
-            return resultMap;
+            return PagerData.error();
         }
     }
+
 }

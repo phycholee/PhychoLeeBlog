@@ -55,14 +55,18 @@ public class ArticleController {
     @SuppressWarnings("Duplicates")
     @PostMapping("/articles")
     public JsonData getArticleByPage(@RequestBody Map<String, Object> params){
-        Integer offset = params.get("offset") == null ? -1 : (StringUtils.isEmpty(params.get("offset").toString()) ? -1 : Integer.parseInt(params.get("offset").toString()));
+        Integer page = params.get("page") == null ? -1 : (StringUtils.isEmpty(params.get("page").toString()) ? -1 : Integer.parseInt(params.get("page").toString()));
         Integer limit = params.get("limit") == null ? -1 : (StringUtils.isEmpty(params.get("limit").toString()) ? -1 : Integer.parseInt(params.get("limit").toString()));
         Integer tagId = params.get("tagId") == null ? -1 : (StringUtils.isEmpty(params.get("tagId").toString()) ? -1 : Integer.parseInt(params.get("tagId").toString()));
         Integer status = Article.STATUS_PUBLISHED;
 
         Map<String, Object> params2 = new HashMap<>();
-        params2.put("offset", offset);
-        params2.put("limit", limit);
+        if (page > -1 && limit > -1){
+            int offset = (page - 1) * limit;
+            params2.put("offset", offset);
+            params2.put("limit", limit);
+        }
+
         params2.put("status", status);
         if (tagId > -1){
             params2.put("tagId", tagId);

@@ -30,6 +30,12 @@ spring:
   resources:
     static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:${web.upload-path}
 
+# redis
+  redis:
+    host: 127.0.0.1
+#    password: redisroot
+    port: 6379
+
 #自定义图片存放路径
 web:
   upload-path: E:/phycholee_blog/image/

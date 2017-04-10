@@ -33,7 +33,7 @@ spring:
 # redis
   redis:
     host: 127.0.0.1
-#    password: redisroot
+    password: redisroot
     port: 6379
 
 #自定义图片存放路径

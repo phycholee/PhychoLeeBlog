@@ -20,7 +20,7 @@ public interface TokenService {
      * @param token
      * @return
      */
-    boolean checkToken(TokenModel token);
+    boolean checkToken(TokenModel model);
 
     /**
      * 从字符串中解析token
@@ -33,5 +33,5 @@ public interface TokenService {
      * 删除token
      * @param userId
      */
-    void deleteToken(String userId);
+    void deleteToken(Integer userId);
 }

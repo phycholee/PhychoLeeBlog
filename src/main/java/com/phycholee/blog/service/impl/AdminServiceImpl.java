@@ -7,6 +7,8 @@ import com.phycholee.blog.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
+
 /**
  * Created by PhychoLee on 2016/11/9 21:01.
  * Description: 管理员Service实现类
@@ -19,5 +21,10 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin> implements AdminSer
     public void setAdminDao(AdminDao adminDao) {
         this.adminDao = adminDao;
         super.setDao(adminDao);
+    }
+
+    @Override
+    public Admin findByUsername(String username) throws SQLException {
+        return adminDao.findByUsername(username);
     }
 }

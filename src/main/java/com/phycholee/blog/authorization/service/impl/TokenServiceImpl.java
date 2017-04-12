@@ -45,7 +45,7 @@ public class TokenServiceImpl implements TokenService {
             return false;
 
         //延长token时长
-        redis.boundValueOps(model.getUserId().toString()).expire(Constants.TOKEN_EXPIRES_HOUR, TimeUnit.HOURS);
+        redis.boundValueOps(model.getUserId().toString()).expire(Constants.TOKEN_EXPIRES_MINUTES, TimeUnit.MINUTES);
         return true;
     }
 

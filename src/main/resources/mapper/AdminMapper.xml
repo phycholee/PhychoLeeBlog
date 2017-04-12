@@ -15,8 +15,17 @@
   <sql id="Base_Column_List">
     id, username, password, salt, email, avatar, github, cv
   </sql>
-  <select id="findById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+
+
+  <select id="findByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
+    <include refid="Base_Column_List" />
+    from admin
+    where username = #{username,jdbcType=INTEGER}
+  </select>
+
+  <select id="findById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
     <include refid="Base_Column_List" />
     from admin
     where id = #{id,jdbcType=INTEGER}

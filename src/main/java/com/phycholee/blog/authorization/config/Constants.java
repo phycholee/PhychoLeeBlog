@@ -14,5 +14,10 @@ public class Constants {
     /**
      * token有效期（小时）
      */
-    public static final int TOKEN_EXPIRES_HOUR = 72;
+    public static final int TOKEN_EXPIRES_HOUR = 24;
+
+    /**
+     * token有效期（分钟）
+     */
+    public static final int TOKEN_EXPIRES_MINUTES = 30;
 }

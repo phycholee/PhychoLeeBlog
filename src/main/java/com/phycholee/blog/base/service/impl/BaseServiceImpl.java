@@ -30,17 +30,17 @@ public class BaseServiceImpl<T> implements BaseService<T> {
     }
 
     @Transactional
-    public void deleteById(Integer id) throws SQLException {
-        dao.deleteById(id);
+    public int deleteById(Integer id) throws SQLException {
+        return  dao.deleteById(id);
     }
 
     @Transactional
-    public void insert(T entity) throws SQLException {
-        dao.insert(entity);
+    public int insert(T entity) throws SQLException {
+        return dao.insert(entity);
     }
 
     @Transactional
-    public void update(T entity) throws SQLException {
-        dao.update(entity);
+    public int update(T entity) throws SQLException {
+        return dao.update(entity);
     }
 }

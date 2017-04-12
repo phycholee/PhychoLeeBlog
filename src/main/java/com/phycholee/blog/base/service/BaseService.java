@@ -9,9 +9,9 @@ import java.sql.SQLException;
 public interface BaseService<T> {
     T findById(Integer id) throws SQLException;
 
-    void deleteById(Integer id) throws SQLException;
+    int deleteById(Integer id) throws SQLException;
 
-    void insert(T entity) throws SQLException;
+    int insert(T entity) throws SQLException;
 
-    void update(T entity) throws SQLException;
+    int update(T entity) throws SQLException;
 }

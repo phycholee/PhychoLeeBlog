@@ -1,5 +1,6 @@
 package com.phycholee.blog.authorization.controller;
 
+import com.phycholee.blog.authorization.config.Constants;
 import com.phycholee.blog.authorization.model.TokenModel;
 import com.phycholee.blog.authorization.service.TokenService;
 import com.phycholee.blog.model.Admin;
@@ -8,9 +9,9 @@ import com.phycholee.blog.utils.EncryptUtil;
 import com.phycholee.blog.utils.JsonData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 
 /**
@@ -33,8 +34,8 @@ public class LoginController {
      * @param password
      * @return
      */
-    @RequestMapping(value = "login",method = RequestMethod.POST)
-    public JsonData adminLogin(String username, String password){
+    @PostMapping("login")
+    public JsonData adminLogin(String username, String password, HttpServletRequest request){
 
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)){
             return JsonData.badParameter("参数错误");
@@ -56,6 +57,9 @@ public class LoginController {
             if (authenticate){
                 TokenModel model = tokenService.createToken(admin.getId());
 
+                //将用户id存到session
+                request.getSession().setAttribute(Constants.CURRENT_USER_ID, admin.getId());
+
                 return JsonData.success(model);
             } else {
                 return JsonData.generate(JsonData.CODE_ERROR, "用户名或密码错误", null);
@@ -72,7 +76,7 @@ public class LoginController {
      * @param id
      * @return
      */
-    @RequestMapping(value = "logout",method = RequestMethod.GET)
+    @GetMapping("logout")
     public JsonData adminLogout(Integer id){
 
         if (id == null){

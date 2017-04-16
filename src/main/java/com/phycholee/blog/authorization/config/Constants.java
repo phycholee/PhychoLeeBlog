@@ -11,6 +11,8 @@ public class Constants {
      */
     public static final String CURRENT_USER_ID = "CURRENT_USER_ID";
 
+    public static final String TOKEN = "token";
+
     /**
      * token有效期（小时）
      */

@@ -27,7 +27,7 @@ public interface TokenService {
      * @param authentication 加密后的字符串
      * @return
      */
-    TokenModel getToken(String authentication);
+    TokenModel getToken(String token);
 
     /**
      * 删除token

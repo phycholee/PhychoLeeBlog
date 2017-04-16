@@ -52,7 +52,15 @@ public class TestRedis {
 
     @Test
     public void testCreateToken(){
-        TokenModel token = tokenService.createToken(113);
-        System.out.println(token.getToken());
+//        TokenModel token = tokenService.createToken(113);
+        String s = redis.boundValueOps("113").get();
+        System.out.println(s);
+    }
+
+    @Test
+    public void testCheckToken(){
+        TokenModel tokenModel = new TokenModel(null, null);
+        boolean b = tokenService.checkToken(tokenModel);
+        System.out.println(b);
     }
 }

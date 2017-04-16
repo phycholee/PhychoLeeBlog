@@ -1,12 +1,14 @@
 package com.phycholee.blog.authorization.interceptor;
 
+import com.phycholee.blog.authorization.config.Constants;
+import com.phycholee.blog.authorization.model.TokenModel;
+import com.phycholee.blog.authorization.service.TokenService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.Method;
 
 /**
  * Created by PhychoLee on 2017/4/7 22:24.
@@ -15,16 +17,31 @@ import java.lang.reflect.Method;
 @Component
 public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
 
+    @Autowired
+    private TokenService tokenService;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        //如果不是映射到方法直接通过
-        if (!(handler instanceof HandlerMethod)) {
-            return true;
-        }
-        HandlerMethod handlerMethod = (HandlerMethod) handler;
-        Method method = handlerMethod.getMethod();
+        //从header中得到token
+        String token = request.getHeader(Constants.TOKEN);
 
-        return super.preHandle(request, response, handler);
+        Object userIdO = request.getSession().getAttribute(Constants.CURRENT_USER_ID);
+        Integer userId = null;
+        if (userIdO != null){
+            userId = (Integer) userIdO;
+        }
+
+        TokenModel tokenModel = new TokenModel(userId, token);
+
+        boolean checkToken = tokenService.checkToken(tokenModel);
+
+        if (checkToken){
+            request.getSession().setAttribute(Constants.CURRENT_USER_ID, tokenModel.getUserId());
+            return true;
+        } else {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return false;
+        }
     }
 }

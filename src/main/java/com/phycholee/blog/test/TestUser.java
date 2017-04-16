@@ -1,13 +1,18 @@
 package com.phycholee.blog.test;
 
+import com.phycholee.blog.model.Admin;
 import com.phycholee.blog.model.User;
+import com.phycholee.blog.service.AdminService;
 import com.phycholee.blog.service.UserService;
+import com.phycholee.blog.utils.EncryptUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 
 /**
@@ -20,6 +25,9 @@ public class TestUser {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AdminService adminService;
 
     @Test
     public void testFind() throws SQLException {
@@ -43,6 +51,21 @@ public class TestUser {
         user.setEmail("wss@163.com");
 
         userService.update(user);
+    }
+
+    @Test
+    public void addAdmin() throws InvalidKeySpecException, NoSuchAlgorithmException, SQLException {
+        String salt = EncryptUtil.generateSalt();
+
+        String encryptedPassword = EncryptUtil.encryptPassword("admin", salt);
+
+        Admin admin = new Admin();
+        admin.setUsername("llf");
+        admin.setPassword(encryptedPassword);
+        admin.setSalt(salt);
+        admin.setEmail("llf@qq.com");
+
+        adminService.insert(admin);
     }
 
 }

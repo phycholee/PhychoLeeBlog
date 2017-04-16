@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -36,8 +35,11 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public boolean checkToken(TokenModel model) {
-        if (model == null)
+        if (model == null) {
             return false;
+        } else if (model.getUserId() == null || model.getToken() == null){
+            return false;
+        }
 
         String token = redis.boundValueOps(model.getUserId().toString()).get();
 
@@ -50,7 +52,7 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public TokenModel getToken(String authentication) {
+    public TokenModel getToken(String token) {
         return null;
     }
 

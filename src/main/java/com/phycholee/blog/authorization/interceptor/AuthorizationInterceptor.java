@@ -37,7 +37,6 @@ public class AuthorizationInterceptor extends HandlerInterceptorAdapter {
         boolean checkToken = tokenService.checkToken(tokenModel);
 
         if (checkToken){
-            request.getSession().setAttribute(Constants.CURRENT_USER_ID, tokenModel.getUserId());
             return true;
         } else {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

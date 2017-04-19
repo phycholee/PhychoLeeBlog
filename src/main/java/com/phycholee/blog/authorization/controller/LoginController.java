@@ -57,10 +57,10 @@ public class LoginController {
             if (authenticate){
                 TokenModel model = tokenService.createToken(admin.getId());
 
-                //将用户id存到session
-                request.getSession().setAttribute(Constants.CURRENT_USER_ID, admin.getId());
+                String token = model.getToken();
+                token += "-" + model.getUserId();
 
-                return JsonData.success(model);
+                return JsonData.success(token);
             } else {
                 return JsonData.generate(JsonData.CODE_ERROR, "用户名或密码错误", null);
             }
@@ -73,18 +73,25 @@ public class LoginController {
 
     /**
      * 管理员注销
-     * @param id
+     * @param request
      * @return
      */
-    @GetMapping("logout")
-    public JsonData adminLogout(Integer id){
+    @PostMapping("logout")
+    public JsonData adminLogout(String token, HttpServletRequest request){
 
-        if (id == null){
-            return JsonData.badParameter("id不能为空");
+        if (StringUtils.isEmpty(token)){
+            return JsonData.badParameter("token错误");
         }
 
+        //获取token和userId
+        String[] split = token.split("-");
+        if (split.length <2){
+            return JsonData.badParameter("token错误");
+        }
+        Integer userId = Integer.parseInt(split[1]);
+
         //删除token
-        tokenService.deleteToken(id);
+        tokenService.deleteToken(userId);
 
         return JsonData.success(null);
     }

@@ -23,9 +23,12 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public TokenModel createToken(Integer userId) {
 
-        String str1 = UUID.randomUUID().toString().replace("-", "");
-        String str2 = UUID.randomUUID().toString().replace("-", "");
-        String token = str1 + str2;
+        String token = "";
+
+        for (int i = 0; i < 5; i++){
+            token += UUID.randomUUID().toString().replace("-", "");
+        }
+
         TokenModel tokenModel = new TokenModel(userId, token);
 
         redis.boundValueOps(userId.toString()).set(token, Constants.TOKEN_EXPIRES_HOUR, TimeUnit.HOURS);

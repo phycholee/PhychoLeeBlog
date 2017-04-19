@@ -34,7 +34,7 @@ public class AdminArticleController {
      */
     @SuppressWarnings("Duplicates")
     @PostMapping("articles")
-    public Map<String, Object> getArticles(@RequestBody Map<String, Object> params){
+    public Map<String, Object> getArticles(Map<String, Object> params){
         Integer offset = params.get("offset") == null ? -1 : (StringUtils.isEmpty(params.get("offset").toString()) ? -1 : Integer.parseInt(params.get("offset").toString()));
         Integer limit = params.get("limit") == null ? -1 : (StringUtils.isEmpty(params.get("limit").toString()) ? -1 : Integer.parseInt(params.get("limit").toString()));
         Integer status = params.get("status") == null ? -1 : (StringUtils.isEmpty(params.get("status").toString()) ? -1 : Integer.parseInt(params.get("status").toString()));
@@ -99,7 +99,7 @@ public class AdminArticleController {
      */
     @SuppressWarnings("Duplicates")
     @PostMapping("/article")
-    public Map<String, Object> addArticle(@RequestBody Article article){
+    public Map<String, Object> addArticle(Article article){
         Map<String, Object> resultMap = new HashMap<>();
 
         String errorMessage = "错误：保存文章失败";
@@ -137,7 +137,7 @@ public class AdminArticleController {
      */
     @PutMapping("article")
     @SuppressWarnings("Duplicates")
-    public Map<String, Object> updateArticle(@RequestBody Article article){
+    public Map<String, Object> updateArticle(Article article){
         Map<String, Object> resultMap = new HashMap<>();
         String errorMessage = "错误：修改文章失败";
         try {

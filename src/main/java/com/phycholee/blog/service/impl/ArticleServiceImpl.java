@@ -2,8 +2,10 @@ package com.phycholee.blog.service.impl;
 
 import com.phycholee.blog.base.service.impl.BaseServiceImpl;
 import com.phycholee.blog.dao.ArticleDao;
+import com.phycholee.blog.model.Admin;
 import com.phycholee.blog.model.Article;
 import com.phycholee.blog.model.ArticleCriteria;
+import com.phycholee.blog.service.AdminService;
 import com.phycholee.blog.service.ArticleService;
 import com.phycholee.blog.service.TagService;
 import com.phycholee.blog.utils.FileUtil;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.sql.SQLException;
@@ -42,6 +45,9 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article> implements Arti
 
     @Autowired
     private TagService tagService;
+
+    @Autowired
+    private AdminService adminService;
 
     /**
      * 分页查找文章
@@ -164,7 +170,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article> implements Arti
      * @return
      */
     @Override
-    public Pager findArticlesByCondition(Map<String, Object> params) {
+    public Pager findArticlesByCondition(Map<String, Object> params) throws SQLException {
 
         Pager<Article> pager = new Pager<>();
 
@@ -182,7 +188,18 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article> implements Arti
 
         articleCriteria.setOrderByClause("create_time desc");
 
-        pager.setData(articleDao.selectByCondition(articleCriteria));
+        List<Article> articles = articleDao.selectByCondition(articleCriteria);
+
+        if (!CollectionUtils.isEmpty(articles)){
+            for(Article article : articles){
+                if (article.getAuthorId() != null){
+                    Admin admin = adminService.findById(article.getAuthorId());
+                    article.setAuthorName(admin.getNickname());
+                }
+            }
+        }
+
+        pager.setData(articles);
         pager.setTotal(articleDao.countByCondition(articleCriteria));
 
         return pager;

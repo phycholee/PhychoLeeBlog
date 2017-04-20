@@ -24,5 +24,5 @@ public interface ArticleService extends BaseService<Article> {
 
     void updateImgsrc(Article article) throws SQLException;
 
-    Pager findArticlesByCondition(Map<String, Object> params);
+    Pager findArticlesByCondition(Map<String, Object> params) throws SQLException ;
 }

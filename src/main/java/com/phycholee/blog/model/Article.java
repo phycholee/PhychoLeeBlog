@@ -35,6 +35,8 @@ public class Article {
 
     private Integer[] tagIds;
 
+    private String authorName;
+
     private List<Tag> tags = new ArrayList<>();
 
     public Integer getId() {
@@ -147,6 +149,14 @@ public class Article {
 
     public void setTags(List<Tag> tags) {
         this.tags = tags;
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 
     @Override

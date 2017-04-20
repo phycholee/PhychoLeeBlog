@@ -18,6 +18,8 @@ public class Admin {
 
     private String cv;
 
+    private String nickname;
+
     public Integer getId() {
         return id;
     }
@@ -80,5 +82,13 @@ public class Admin {
 
     public void setCv(String cv) {
         this.cv = cv == null ? null : cv.trim();
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 }

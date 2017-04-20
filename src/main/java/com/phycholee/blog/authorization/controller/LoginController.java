@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 
 /**
@@ -35,7 +36,11 @@ public class LoginController {
      * @return
      */
     @PostMapping("login")
-    public JsonData adminLogin(String username, String password, HttpServletRequest request){
+    public JsonData adminLogin(@RequestBody Map<String, Object> params, HttpServletRequest request){
+
+        String username = params.get("username") == null ? "" : params.get("username").toString();
+        String password = params.get("password") == null ? "" : params.get("password").toString();
+
 
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)){
             return JsonData.badParameter("参数错误");
@@ -77,7 +82,7 @@ public class LoginController {
      * @return
      */
     @PostMapping("logout")
-    public JsonData adminLogout(String token, HttpServletRequest request){
+    public JsonData adminLogout(@RequestBody String token, HttpServletRequest request){
 
         if (StringUtils.isEmpty(token)){
             return JsonData.badParameter("token错误");

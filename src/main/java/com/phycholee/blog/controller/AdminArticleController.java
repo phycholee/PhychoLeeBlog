@@ -1,13 +1,19 @@
 package com.phycholee.blog.controller;
 
+import com.phycholee.blog.authorization.config.Constants;
+import com.phycholee.blog.model.Admin;
 import com.phycholee.blog.model.Article;
+import com.phycholee.blog.service.AdminService;
 import com.phycholee.blog.service.ArticleService;
 import com.phycholee.blog.service.TagService;
+import com.phycholee.blog.utils.JsonData;
 import com.phycholee.blog.utils.Pager;
+import com.phycholee.blog.utils.PagerData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +33,9 @@ public class AdminArticleController {
     @Autowired
     private TagService tagService;
 
+    @Autowired
+    private AdminService adminService;
+
 
     /**
      * 分页查询文章
@@ -34,19 +43,20 @@ public class AdminArticleController {
      */
     @SuppressWarnings("Duplicates")
     @PostMapping("articles")
-    public Map<String, Object> getArticles(Map<String, Object> params){
-        Integer offset = params.get("offset") == null ? -1 : (StringUtils.isEmpty(params.get("offset").toString()) ? -1 : Integer.parseInt(params.get("offset").toString()));
+    public JsonData getArticles(@RequestBody Map<String, Object> params){
+        Integer page = params.get("page") == null ? -1 : (StringUtils.isEmpty(params.get("page").toString()) ? -1 : Integer.parseInt(params.get("page").toString()));
         Integer limit = params.get("limit") == null ? -1 : (StringUtils.isEmpty(params.get("limit").toString()) ? -1 : Integer.parseInt(params.get("limit").toString()));
         Integer status = params.get("status") == null ? -1 : (StringUtils.isEmpty(params.get("status").toString()) ? -1 : Integer.parseInt(params.get("status").toString()));
         Integer tagId = params.get("tagId") == null ? -1 : (StringUtils.isEmpty(params.get("tagId").toString()) ? -1 : Integer.parseInt(params.get("tagId").toString()));
         String title = params.get("title") == null ? "" : params.get("title").toString();
 
-        Map<String, Object> resultMap = new HashMap<>();
-
         try {
             Map<String, Object> params2 = new HashMap<>();
-            params2.put("offset", offset);
-            params2.put("limit", limit);
+            if (page > -1 && limit > -1){
+                int offset = (page - 1) * limit;
+                params2.put("offset", offset);
+                params2.put("limit", limit);
+            }
             if (status >-1 )
                 params2.put("status", status);
             if (tagId > -1)
@@ -54,15 +64,10 @@ public class AdminArticleController {
             params2.put("title", title);
             Pager pager = articleService.findArticlesByCondition(params2);
 
-            resultMap.put("code", 200);
-            resultMap.put("rows", pager.getData());
-            resultMap.put("total", pager.getTotal());
-            return resultMap;
+            return JsonData.success(pager);
         } catch (Exception e) {
             e.printStackTrace();
-            resultMap.put("code", 400);
-            resultMap.put("message", "查找出错");
-            return resultMap;
+            return JsonData.error();
         }
     }
 
@@ -73,23 +78,23 @@ public class AdminArticleController {
      */
     @SuppressWarnings("Duplicates")
     @GetMapping("/article/{id}")
-    public Map<String, Object> getArticle(@PathVariable("id") Integer id){
+    public JsonData getArticle(@PathVariable("id") Integer id){
         Map<String, Object> resultMap = new HashMap<>();
 
         Article article = null;
         try {
             article = articleService.findById(id);
+
+            Admin admin = adminService.findById(article.getAuthorId());
+            article.setAuthorName(admin.getNickname());
             //查找文章所有标签id
             article.setTags(tagService.findTagsBayArticle(article.getId()));
         } catch (Exception e) {
             e.printStackTrace();
-            resultMap.put("code", 400);
-            resultMap.put("message", "查找失败");
+            return JsonData.error();
         }
 
-        resultMap.put("code", 200);
-        resultMap.put("article", article);
-        return resultMap;
+        return JsonData.success(article);
     }
 
     /**
@@ -99,9 +104,7 @@ public class AdminArticleController {
      */
     @SuppressWarnings("Duplicates")
     @PostMapping("/article")
-    public Map<String, Object> addArticle(Article article){
-        Map<String, Object> resultMap = new HashMap<>();
-
+    public JsonData addArticle(@RequestBody Article article, HttpServletRequest request){
         String errorMessage = "错误：保存文章失败";
         try {
             //检验字段
@@ -116,18 +119,17 @@ public class AdminArticleController {
                 throw new RuntimeException(errorMessage);
             }
 
+            Admin admin = (Admin) request.getSession().getAttribute(Constants.CURRENT_USER);
+            article.setAuthorId(admin.getId());
+
             articleService.insertImgSrc(article);
 
         } catch (Exception e) {
             e.printStackTrace();
-            resultMap.put("code", 400);
-            resultMap.put("message", errorMessage);
-            return resultMap;
+            return JsonData.badParameter(errorMessage);
         }
 
-        resultMap.put("code", 200);
-        resultMap.put("message", "保存文章成功");
-        return resultMap;
+        return JsonData.success("添加成功", null);
     }
 
     /**
@@ -137,8 +139,7 @@ public class AdminArticleController {
      */
     @PutMapping("article")
     @SuppressWarnings("Duplicates")
-    public Map<String, Object> updateArticle(Article article){
-        Map<String, Object> resultMap = new HashMap<>();
+    public JsonData updateArticle(@RequestBody Article article){
         String errorMessage = "错误：修改文章失败";
         try {
             //检验字段
@@ -157,14 +158,10 @@ public class AdminArticleController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            resultMap.put("code", 400);
-            resultMap.put("message", errorMessage);
-            return resultMap;
+            return JsonData.badParameter(errorMessage);
         }
 
-        resultMap.put("code", 200);
-        resultMap.put("message", "成功：修改文章成功");
-        return resultMap;
+        return JsonData.success("修改成功", null);
     }
 
     /**
@@ -173,22 +170,17 @@ public class AdminArticleController {
      * @return
      */
     @DeleteMapping("/article/{id}")
-    public Map<String, Object> deleteArticle(@PathVariable("id") Integer id){
-        Map<String, Object> resultMap = new HashMap<>();
+    public JsonData deleteArticle(@PathVariable("id") Integer id){
 
         try {
             articleService.deleteArticleAndResource(id);
             System.out.println("删除id："+id);
         } catch (Exception e) {
             e.printStackTrace();
-            resultMap.put("code", 400);
-            resultMap.put("message", "删除失败");
-            return resultMap;
+            return JsonData.error("删除失败");
         }
 
-        resultMap.put("code", 200);
-        resultMap.put("message", "删除成功");
-        return resultMap;
+        return JsonData.success("删除成功", null);
     }
 
 }

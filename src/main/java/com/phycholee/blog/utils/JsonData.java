@@ -22,9 +22,18 @@ public class JsonData {
         return new JsonData(CODE_SUCCESS, MSG_SUCCESS, data);
     }
 
+    public static JsonData success(String message, Object data){
+        return new JsonData(CODE_SUCCESS, message, data);
+    }
+
     public static JsonData error(){
         return new JsonData(CODE_ERROR, MSG_ERROR);
     }
+
+    public static JsonData error(String message){
+        return new JsonData(CODE_ERROR, message);
+    }
+
 
     public static JsonData generate(int code, String msg, Object data){
         return new JsonData(code, msg, data);

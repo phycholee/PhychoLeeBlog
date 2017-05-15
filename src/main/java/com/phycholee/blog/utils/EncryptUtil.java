@@ -1,7 +1,5 @@
 package com.phycholee.blog.utils;
 
-import org.springframework.util.DigestUtils;
-
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.math.BigInteger;

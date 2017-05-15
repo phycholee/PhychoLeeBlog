@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by PhychoLee on 2016/11/9 21:01.
@@ -26,5 +27,10 @@ public class AdminServiceImpl extends BaseServiceImpl<Admin> implements AdminSer
     @Override
     public Admin findByUsername(String username) throws SQLException {
         return adminDao.findByUsername(username);
+    }
+
+    @Override
+    public List<Admin> getAdminList() throws SQLException {
+        return adminDao.getAdminList();
     }
 }

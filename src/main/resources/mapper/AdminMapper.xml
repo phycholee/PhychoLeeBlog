@@ -16,6 +16,11 @@
   <sql id="Base_Column_List">
     id, username, password, salt, email, avatar, github, cv, nickname
   </sql>
+  
+  <select id="getAdminList" resultMap="BaseResultMap">
+    SELECT id, username, email, avatar, github, cv, nickname
+    from phycholee_blog.admin
+  </select>
 
 
   <select id="findByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">

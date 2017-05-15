@@ -4,6 +4,7 @@ import com.phycholee.blog.base.service.BaseService;
 import com.phycholee.blog.model.Admin;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by PhychoLee on 2016/11/9 21:00.
@@ -12,5 +13,7 @@ import java.sql.SQLException;
 public interface AdminService extends BaseService<Admin> {
 
     Admin findByUsername(String username) throws SQLException;
+
+    List<Admin> getAdminList() throws SQLException;
 
 }

@@ -6,16 +6,17 @@ import com.phycholee.blog.utils.EncryptUtil;
 import com.phycholee.blog.utils.JsonData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by PhychoLee on 2017/4/12 23:08.
  * Description:
  */
 @RestController
-@RequestMapping("adminc")
+@RequestMapping("admin")
 public class AdminController {
 
     @Autowired
@@ -55,6 +56,42 @@ public class AdminController {
             }
 
         } catch (Exception e) {
+            e.printStackTrace();
+            return JsonData.error();
+        }
+    }
+
+    @RequestMapping(value = "update", method = RequestMethod.POST)
+    public JsonData update(@RequestBody Admin admin){
+        if (admin == null)
+            return JsonData.badParameter("参数不能为空");
+
+        if (admin.getId() == null)
+            return JsonData.badParameter("id不能为空");
+
+        try {
+
+            int result = adminService.update(admin);
+
+            if (result > 0){
+                return JsonData.success(null);
+            } else {
+                return JsonData.error("修改用户信息失败！");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return JsonData.error("修改用户信息失败！");
+        }
+    }
+
+
+    @GetMapping("admins")
+    public JsonData getAdminList(){
+        try {
+            List<Admin> adminList = adminService.getAdminList();
+            return JsonData.success(adminList);
+        } catch (SQLException e) {
             e.printStackTrace();
             return JsonData.error();
         }

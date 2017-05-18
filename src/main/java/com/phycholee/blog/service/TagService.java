@@ -28,4 +28,6 @@ public interface TagService extends BaseService<Tag> {
 
     Pager findTagsByCondition(Map<String, Object> params);
 
+    int countByCondition(Map<String, Object> params);
+
 }

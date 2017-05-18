@@ -6,9 +6,10 @@
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="description" jdbcType="VARCHAR" property="description" />
     <result column="jumbotron" jdbcType="VARCHAR" property="jumbotron" />
+    <result column="is_index" jdbcType="INTEGER" property="isIndex" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, name, description, jumbotron
+    id, name, description, jumbotron, is_index
   </sql>
 
   <sql id="Condition_Where_Clause">
@@ -110,9 +111,10 @@
   </delete>
 
   <insert id="insert" parameterType="com.phycholee.blog.model.Tag">
-    insert into tag (name, description, jumbotron
+    insert into tag (name, description, jumbotron, is_index
       )
-    values (#{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{jumbotron,jdbcType=VARCHAR}
+    values (#{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, #{jumbotron,jdbcType=VARCHAR},
+      #{isIndex,jdbcType=INTEGER}
       )
   </insert>
 
@@ -127,6 +129,9 @@
       </if>
       <if test="jumbotron != null">
         jumbotron = #{jumbotron,jdbcType=VARCHAR},
+      </if>
+      <if test="isIndex != null">
+        is_index = #{isIndex,jdbcType=INTEGER},
       </if>
     </set>
     where id = #{id,jdbcType=INTEGER}

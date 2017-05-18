@@ -36,10 +36,10 @@ public class LoginController {
      * @return
      */
     @PostMapping("login")
-    public JsonData adminLogin(@RequestBody Map<String, Object> params, HttpServletRequest request){
+    public JsonData adminLogin(@RequestBody Map<String, Object> params){
 
-        String username = params.get("username") == null ? "" : params.get("username").toString();
-        String password = params.get("password") == null ? "" : params.get("password").toString();
+        String username = params.get("username") == null ? "" : params.get("username").toString().trim();
+        String password = params.get("password") == null ? "" : params.get("password").toString().trim();
 
 
         if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)){
@@ -53,10 +53,11 @@ public class LoginController {
                 return JsonData.generate(JsonData.CODE_ERROR, "用户名或密码错误", null);
             }
 
+            /**
+             * 校验密码
+             */
             String salt = admin.getSalt();
-
             String encryptedPassword = admin.getPassword();
-
             boolean authenticate = EncryptUtil.authenticate(password, encryptedPassword, salt);
 
             if (authenticate){

@@ -10,7 +10,7 @@ public class JsonData {
     public static final int CODE_ERROR = 400;
 
     public static final String MSG_SUCCESS = "请求成功！";
-    public static final String MSG_ERROR = "系统错误！";
+    public static final String MSG_ERROR = "网络出了小问题，稍后重试！";
 
     private int code;
 

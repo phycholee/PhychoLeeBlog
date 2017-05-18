@@ -30,16 +30,16 @@ public class ArticleController {
     @SuppressWarnings("Duplicates")
     @GetMapping("/article/{id}")
     public JsonData getArticle(@PathVariable("id") Integer id){
-        Map<String, Object> resultMap = new HashMap<>();
 
         try {
             Article article = articleService.findById(id);
             if(Article.STATUS_SAVE.equals(article.getStatus())){
-                //不允许查找未发布的文章
-                throw new RuntimeException();
+                return JsonData.badParameter("查找错误！");
             }
             //不需要md文本
             article.setMarkdownContent(null);
+
+
 
             return JsonData.success(article);
         } catch (Exception e) {

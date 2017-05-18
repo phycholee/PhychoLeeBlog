@@ -79,8 +79,6 @@ public class AdminArticleController {
     @SuppressWarnings("Duplicates")
     @GetMapping("/article/{id}")
     public JsonData getArticle(@PathVariable("id") Integer id){
-        Map<String, Object> resultMap = new HashMap<>();
-
         Article article = null;
         try {
             article = articleService.findById(id);

@@ -10,6 +10,8 @@ public class Tag {
 
     private String jumbotron;
 
+    private Integer isIndex;
+
     public Integer getId() {
         return id;
     }
@@ -40,5 +42,13 @@ public class Tag {
 
     public void setJumbotron(String jumbotron) {
         this.jumbotron = jumbotron;
+    }
+
+    public Integer getIsIndex() {
+        return isIndex;
+    }
+
+    public void setIsIndex(Integer isIndex) {
+        this.isIndex = isIndex;
     }
 }

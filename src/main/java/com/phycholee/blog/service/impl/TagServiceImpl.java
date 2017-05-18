@@ -65,10 +65,26 @@ public class TagServiceImpl extends BaseServiceImpl<Tag> implements TagService {
         return pager;
     }
 
+    @Override
+    public int countByCondition(Map<String, Object> params) {
+        TagCriteria tagCriteria = new TagCriteria();
+        TagCriteria.Criteria criteria = tagCriteria.createCriteria();
+
+        setCriteria(criteria, params);
+        return tagDao.countByCondition(tagCriteria);
+    }
+
+
     private void setCriteria(TagCriteria.Criteria criteria, Map<String, Object> params) {
         String name = params.get("name") == null ? "" : params.get("name").toString();
+        Integer isIndex = params.get("isIndex") == null ? -1 : (StringUtils.isEmpty(params.get("isIndex").toString()) ? -1 : Integer.parseInt(params.get("isIndex").toString()));
+
+
         if (!StringUtils.isEmpty(name)){
             criteria.andNameEqualTo(name);
+        }
+        if (isIndex > -1){
+            criteria.andIsIndexEqualTo(isIndex);
         }
 
     }

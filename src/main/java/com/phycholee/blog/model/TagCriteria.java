@@ -394,6 +394,76 @@ public class TagCriteria {
             addCriterion("jumbotron not between", value1, value2, "jumbotron");
             return (Criteria) this;
         }
+
+        public Criteria andIndexIsNull() {
+            addCriterion("is_index is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsIndexIsNotNull() {
+            addCriterion("is_index is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsIndexEqualTo(Integer value) {
+            addCriterion("is_index =", value, "isIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsIndexNotEqualTo(Integer value) {
+            addCriterion("is_index <>", value, "isIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsIndexGreaterThan(Integer value) {
+            addCriterion("is_index >", value, "isIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsIndexGreaterThanOrEqualTo(Integer value) {
+            addCriterion("is_index >=", value, "isIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsIndexLessThan(Integer value) {
+            addCriterion("is_index <", value, "isIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsIndexLessThanOrEqualTo(Integer value) {
+            addCriterion("is_index <=", value, "isIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsIndexLike(Integer value) {
+            addCriterion("is_index like", value, "isIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsIndexNotLike(Integer value) {
+            addCriterion("is_index not like", value, "isIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsIndexIn(List<Integer> values) {
+            addCriterion("is_index in", values, "isIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsIndexNotIn(List<Integer> values) {
+            addCriterion("is_index not in", values, "isIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsIndexBetween(Integer value1, Integer value2) {
+            addCriterion("is_index between", value1, value2, "isIndex");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsIndexNotBetween(Integer value1, Integer value2) {
+            addCriterion("is_index not between", value1, value2, "isIndex");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

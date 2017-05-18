@@ -3,6 +3,7 @@ package com.phycholee.blog.controller;
 import com.phycholee.blog.authorization.config.Constants;
 import com.phycholee.blog.model.Admin;
 import com.phycholee.blog.model.Article;
+import com.phycholee.blog.model.Tag;
 import com.phycholee.blog.service.AdminService;
 import com.phycholee.blog.service.ArticleService;
 import com.phycholee.blog.service.TagService;
@@ -10,6 +11,7 @@ import com.phycholee.blog.utils.JsonData;
 import com.phycholee.blog.utils.Pager;
 import com.phycholee.blog.utils.PagerData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -86,7 +88,16 @@ public class AdminArticleController {
             Admin admin = adminService.findById(article.getAuthorId());
             article.setAuthorName(admin.getNickname());
             //查找文章所有标签id
-            article.setTags(tagService.findTagsBayArticle(article.getId()));
+            List<Tag> tags = tagService.findTagsBayArticle(article.getId());
+            article.setTags(tags);
+            Integer[] tagIds = new Integer[tags.size()];
+            int index = 0;
+            if (!CollectionUtils.isEmpty(tags)){
+                for (Tag tag : tags){
+                    tagIds[index++] = tag.getId();
+                }
+            }
+            article.setTagIds(tagIds);
         } catch (Exception e) {
             e.printStackTrace();
             return JsonData.error();

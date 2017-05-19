@@ -20,10 +20,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by PhychoLee on 2016/11/9 21:04.
@@ -93,7 +90,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article> implements Arti
             article.setImgSrc(imgSrc);
         }
 
-        article.setCreateTime(TimeUtil.getDateTime());
+        article.setCreateTime(new Date());
 
         insert(article);
 
@@ -151,7 +148,7 @@ public class ArticleServiceImpl extends BaseServiceImpl<Article> implements Arti
 
         //如果文章状态改变，将重设时间
         if(!oldArticle.getStatus().equals(article.getStatus())){
-            article.setCreateTime(TimeUtil.getDateTime());
+            article.setCreateTime(new Date());
         }
 
         update(article);

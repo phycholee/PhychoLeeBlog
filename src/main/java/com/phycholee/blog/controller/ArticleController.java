@@ -1,7 +1,11 @@
 package com.phycholee.blog.controller;
 
+import com.phycholee.blog.model.Admin;
 import com.phycholee.blog.model.Article;
+import com.phycholee.blog.model.Tag;
+import com.phycholee.blog.service.AdminService;
 import com.phycholee.blog.service.ArticleService;
+import com.phycholee.blog.service.TagService;
 import com.phycholee.blog.utils.JsonData;
 import com.phycholee.blog.utils.Pager;
 import com.phycholee.blog.utils.PagerData;
@@ -27,6 +31,12 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
+    @Autowired
+    private TagService tagService;
+
+    @Autowired
+    private AdminService adminService;
+
     @SuppressWarnings("Duplicates")
     @GetMapping("/article/{id}")
     public JsonData getArticle(@PathVariable("id") Integer id){
@@ -39,6 +49,12 @@ public class ArticleController {
             //不需要md文本
             article.setMarkdownContent(null);
 
+            Admin admin = adminService.findById(article.getAuthorId());
+            article.setAuthorName(admin.getNickname());
+
+            //查找文章所有标签id
+            List<Tag> tags = tagService.findTagsBayArticle(article.getId());
+            article.setTags(tags);
 
 
             return JsonData.success(article);

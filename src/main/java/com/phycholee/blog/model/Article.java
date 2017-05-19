@@ -2,6 +2,7 @@ package com.phycholee.blog.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class Article {
@@ -17,7 +18,7 @@ public class Article {
 
     private Integer authorId;
 
-    private String createTime;
+    private Date createTime;
 
     private Integer likes;
 
@@ -71,11 +72,11 @@ public class Article {
         this.authorId = authorId;
     }
 
-    public String getCreateTime() {
+    public Date getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(String createTime) {
+    public void setCreateTime(Date createTime) {
         this.createTime = createTime;
     }
 

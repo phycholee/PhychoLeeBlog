@@ -25,7 +25,7 @@ public class TestArticle {
 
     @Test
     public void testFindByPage() throws SQLException {
-        List<Article> byPage = articleServicel.findByPage(0, 10, 2);
+        List<Article> byPage = articleServicel.findByPage(0, 10, 1);
         for (Article article : byPage){
             System.out.println(article);
         }

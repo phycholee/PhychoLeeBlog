@@ -16,6 +16,10 @@ spring:
 #    testOnBorrow: false
 #    testOnReturn: false
 
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    joda-date-time-format: yyyy-MM-dd HH:mm:ss
+
   http:
     multipart:
       max-file-size: 10MB

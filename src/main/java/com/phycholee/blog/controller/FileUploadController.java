@@ -24,7 +24,7 @@ import java.util.Map;
  * Description: 上传文件Controller
  */
 @Controller
-@RequestMapping("/admin/upload")
+@RequestMapping("")
 public class FileUploadController {
 
     //获取上传的文件夹，在application.yml中的配置
@@ -41,7 +41,7 @@ public class FileUploadController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/postImage")
+    @PostMapping(value = "/postImage")
     public ModelAndView uploadPostImage(HttpServletRequest request, HttpServletResponse response){
         String dialog_id = request.getParameter("dialog_id");
         String callback = request.getParameter("callback");
@@ -82,7 +82,7 @@ public class FileUploadController {
      * @param file
      * @return
      */
-    @PostMapping("/jumbotronImage")
+    @PostMapping("/admin/upload/jumbotronImage")
     @ResponseBody
     public Map<String, Object> uploadJumbotronImage(@RequestParam("file") MultipartFile file, String data){
         Map<String, Object> resultMap = new HashMap<>();
@@ -133,7 +133,7 @@ public class FileUploadController {
      * @param param
      * @return
      */
-    @PostMapping("deleteImage")
+    @PostMapping("/admin/upload/deleteImage")
     @ResponseBody
     public Map<String, Object> deleteImage(@RequestBody Map<String, String> param){
         Map<String, Object> resultMap = new HashMap<>();
